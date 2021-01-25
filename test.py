@@ -1,4 +1,5 @@
 import dca as algo
+import random
 
 
 def test_amount_to_spend__returns_initialise_price_when_there_is_only_one_price():
@@ -39,3 +40,14 @@ def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price_
 def test_get_total_spent():
     amount = algo.Dca(price_initialisation=10, step_price=2).get_total_spent([10, 8, 13, 12, 8])
     assert amount == 10 + 12 + 14 + 16 + 18
+
+
+def test_get_balance():
+    amount = algo.Dca(price_initialisation=10, step_price=2).get_balance([10, 8, 13, 12, 8])
+    expected_result = 10 / 10 + 12 / 8 + (14 + 16 + 18) / 8
+    assert amount == expected_result
+
+
+def test_get_average_amount():
+    amount = algo.Dca(price_initialisation=10, step_price=2).get_average_amount([10, 8, 13, 12, 8])
+    assert amount == 8.235294117647058

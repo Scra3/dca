@@ -32,6 +32,18 @@ class Dca:
             total += self.compute_amount_to_spend(price_history[0:index + 1])
         return total
 
+    def get_balance(self, price_history: typing.List[float]):
+        total: float = 0
+
+        for index, value in enumerate(price_history):
+            amount = self.compute_amount_to_spend(price_history[0:index + 1])
+            total = total + amount / value
+
+        return total
+
+    def get_average_amount(self, price_history: typing.List[float]):
+        return self.get_total_spent(price_history) / self.get_balance(price_history)
+
     @staticmethod
     def _get_min_price(price_history):
         return min((min_val, min_index) for (min_index, min_val) in enumerate(price_history[0: -1]))
