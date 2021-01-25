@@ -10,24 +10,23 @@ class Dca:
         if len(price_history) == 1:
             return self.price_initialisation
 
-        min_val, min_index = min((min_val, min_index) for (min_index, min_val) in enumerate(price_history[0: -1]))
-
-        if len(price_history) >= 2 and min_val < price_history[-1]:
-            return 0.0
+        min_val, min_index = self._get_min_price(price_history)
 
         last_index = len(price_history) - 1
-        if min_index < last_index:
-            prices = price_history[min_index + 1:last_index + 1]
-            next_amount = len(prices) * self.price_initialisation
 
-            init = (len(price_history) - 1)
-            for idx, price in enumerate(price_history[min_index:last_index]):
-                next_amount += (init - idx) * self.step_price
+        if last_index and min_val < price_history[-1]:
+            return 0.0
 
-        else:
-            next_amount = (len(price_history) - 1) * self.step_price + self.price_initialisation
+        prices = price_history[min_index + 1:last_index + 1]
+        next_amount = len(prices) * self.price_initialisation
+
+        for index, _ in enumerate(price_history[min_index:last_index]):
+            next_amount += (last_index - index) * self.step_price
 
         return next_amount
+
+    def _get_min_price(self, price_history):
+        return min((min_val, min_index) for (min_index, min_val) in enumerate(price_history[0: -1]))
 
 
 if __name__ == '__main__':

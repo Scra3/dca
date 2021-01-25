@@ -26,6 +26,11 @@ def test_amount_to_spend__returns_0_if_price_is_higher_that_last_prices():
     assert amount == 0
 
 
-def test_amount_to_spend__returns_additional_amount():
+def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price():
     amount = main.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 7])
-    assert amount == 69
+    assert amount == 22 + 23 + 24
+
+
+def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price_2():
+    amount = main.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 7, 12, 11, 6])
+    assert amount == 27 + 26 + 25
