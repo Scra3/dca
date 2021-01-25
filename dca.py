@@ -25,6 +25,13 @@ class Dca:
 
         return next_amount
 
+    def get_total_spent(self, price_history: typing.List[float]):
+        total: float = 0
+
+        for index, _ in enumerate(price_history):
+            total += self.compute_amount_to_spend(price_history[0:index + 1])
+        return total
+
     @staticmethod
     def _get_min_price(price_history):
         return min((min_val, min_index) for (min_index, min_val) in enumerate(price_history[0: -1]))
