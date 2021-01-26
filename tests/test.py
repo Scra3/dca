@@ -1,5 +1,6 @@
 import dca as algo
-import random
+import datetime as dt
+import data as data
 
 
 def test_amount_to_spend__returns_initialise_price_when_there_is_only_one_price():
@@ -12,9 +13,9 @@ def test_amount_to_spend__returns_initialise_price_and_step_price_sum():
     assert amount == 25
 
 
-def test_amount_to_spend__returns_initialise_price_and_step_price_sum_with_3_prices():
+def test_amount_to_spend__returns_amount_when_price_only_decrease():
     amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 7, 5])
-    assert amount == 22
+    assert amount == 20 + 1 + 1
 
 
 def test_amount_to_spend__returns_0_if_price_is_higher_that_last_price():
@@ -22,7 +23,7 @@ def test_amount_to_spend__returns_0_if_price_is_higher_that_last_price():
     assert amount == 0
 
 
-def test_amount_to_spend__returns_0_if_price_is_higher_that_last_prices():
+def test_amount_to_spend__returns_0_if_price_is_higher_that_last_min_price():
     amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 11])
     assert amount == 0
 
@@ -30,11 +31,6 @@ def test_amount_to_spend__returns_0_if_price_is_higher_that_last_prices():
 def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price():
     amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 7])
     assert amount == 22 + 23 + 24
-
-
-def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price_2():
-    amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 7, 12, 11, 6])
-    assert amount == 27 + 26 + 25
 
 
 def test_get_total_spent():
@@ -51,3 +47,35 @@ def test_get_balance():
 def test_get_average_amount():
     amount = algo.Dca(price_initialisation=10, step_price=2).get_average_amount([10, 8, 13, 12, 8])
     assert amount == 8.235294117647058
+
+
+# TODO --------------------- test should be replaced ---------------------------------
+def get_only_tuesday():
+    filtered_prices = []
+    for price in data.prices:
+        timestamp = price[0] / 1000
+        date = dt.datetime.fromtimestamp(timestamp)
+        if date.weekday() == 2:
+            filtered_prices.append(price)
+
+    return filtered_prices
+
+
+def test_get_average_amount_test_real_price():
+    history = [price[1] for price in get_only_tuesday()]
+    amount = algo.Dca(price_initialisation=20, step_price=2, force_buy_under_price=3500).get_average_amount(history)
+    assert amount == 3955.5692432307906
+
+
+def test_get_average_amount_test_real_price_1():
+    history = [price[1] for price in get_only_tuesday()]
+    amount = algo.Dca(price_initialisation=24, step_price=0.50, force_buy_under_price=3500).get_total_spent(history)
+    toto = amount
+    assert toto == 3955.5692432307906
+
+
+def test_get_average_amount_test_real_price_2():
+    history = [price[1] for price in get_only_tuesday()]
+    amount = algo.Dca(price_initialisation=24, step_price=0.50, force_buy_under_price=3500).get_balance(history)
+    toto = amount
+    assert toto == 3955.5692432307906
