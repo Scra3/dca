@@ -18,9 +18,9 @@ class Dca:
         if force_to_buy:
             return last_index * self.step_price + self.price_initialisation
 
-        min_val, min_index = Dca._get_min_price(price_history)
+        min_price, min_index = Dca._get_min_price(price_history)
 
-        if last_index and min_val < price_history[-1]:
+        if last_index and min_price < price_history[-1]:
             return 0.0
 
         prices = price_history[min_index + 1:last_index + 1]
