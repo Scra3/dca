@@ -40,6 +40,18 @@ def test_amount_to_spend__returns_0_if_price_is_higher_that_last_min_price():
     assert amount == 0
 
 
+def test_amount_to_spend__returns_remaining_when_max_total_amount_to_spend_will_reached():
+    amount = algo.Dca(price_initialisation=10, step_price=1, max_total_amount_to_spend=12).compute_amount_to_spend(
+        [10, 8])
+    assert amount == 2
+
+
+def test_amount_to_spend__raise_error_when_max_total_amount_to_spend_is_lesser_than_price_initialisation():
+    with pytest.raises(Exception):
+        algo.Dca(price_initialisation=10, step_price=1, max_total_amount_to_spend=8).compute_amount_to_spend(
+            [10, 8])
+
+
 def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price():
     amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 7])
     assert amount == 22 + 23 + 24
@@ -60,6 +72,12 @@ def test_amount_to_spend__returns_max_amount_to_spend_when_amount_to_spent_is_bi
 def test_get_total_spent():
     amount = algo.Dca(price_initialisation=10, step_price=2).get_total_spent([10, 8, 13, 12, 8])
     assert amount == 10 + 12 + 14 + 16 + 18
+
+
+def test_get_total_spent__should_return_max_total_amount_to_spend_when_it_is_reached():
+    amount = algo.Dca(price_initialisation=10, step_price=2, max_total_amount_to_spend=20).get_total_spent(
+        [10, 8, 13, 12, 8])
+    assert amount == 20
 
 
 def test_get_balance():
