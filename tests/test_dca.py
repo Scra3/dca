@@ -79,8 +79,8 @@ def test_amount_to_spend__max_amount_to_spent_must_not_exceeded_when_force_buy_i
 
 
 def test_get_average_price():
-    price = algo.Dca(price_initialisation=10, step_price=2).get_average_price(total_spent=10, balance=5)
-    assert price == 2
+    price = algo.Dca.get_average_price(total_spent=10, balance=5)
+    assert price == 10 / 5
 
 
 def test_get_with_real_history():
