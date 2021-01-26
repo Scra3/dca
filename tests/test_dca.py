@@ -41,8 +41,9 @@ def test_amount_to_spend__returns_0_if_price_is_higher_that_last_min_price():
 
 
 def test_amount_to_spend__returns_remaining_when_max_total_amount_to_spend_will_reached():
-    amount = algo.Dca(price_initialisation=10, step_price=1, max_total_amount_to_spend=12).compute_amount_to_spend(
-        [10, 8])
+    amount = algo.Dca(price_initialisation=10, step_price=1,
+                      max_total_amount_to_spend=12).compute_amount_to_spend(
+        [10, 8], total_spent=10)
     assert amount == 2
 
 
@@ -69,41 +70,31 @@ def test_amount_to_spend__returns_max_amount_to_spend_when_amount_to_spent_is_bi
     assert amount == 20
 
 
-def test_get_total_spent():
-    amount = algo.Dca(price_initialisation=10, step_price=2).get_total_spent([10, 8, 13, 12, 8])
-    assert amount == 10 + 12 + 14 + 16 + 18
+def test_amount_to_spend__max_amount_to_spent_must_not_exceeded_when_force_buy_is_set():
+    amount = algo.Dca(price_initialisation=20, step_price=1, max_amount_to_spend=20,
+                      max_total_amount_to_spend=20,
+                      force_buy_under_price=20).compute_amount_to_spend(
+        [10, 11, 7, 4], total_spent=30)
+    assert amount == 0
 
 
-def test_get_total_spent__should_return_max_total_amount_to_spend_when_it_is_reached():
-    amount = algo.Dca(price_initialisation=10, step_price=2, max_total_amount_to_spend=20).get_total_spent(
-        [10, 8, 13, 12, 8])
-    assert amount == 20
+def test_get_average_price():
+    price = algo.Dca(price_initialisation=10, step_price=2).get_average_price(total_spent=10, balance=5)
+    assert price == 2
 
 
-def test_get_balance():
-    amount = algo.Dca(price_initialisation=10, step_price=2).get_balance([10, 8, 13, 12, 8])
-    expected_result = 10 / 10 + 12 / 8 + (14 + 16 + 18) / 8
-    assert amount == expected_result
-
-
-def test_get_average_amount():
-    amount = algo.Dca(price_initialisation=10, step_price=2).get_average_amount([10, 8, 13, 12, 8])
-    assert amount == 8.235294117647058
-
-
-def test_get_average_amount_with_real_prices():
+def test_get_with_real_history():
     history = [price[1] for price in get_only_tuesday_days()]
-    amount = algo.Dca(price_initialisation=20, step_price=2, force_buy_under_price=3500).get_average_amount(history)
-    assert amount == 3716.647913018985
+    dca = algo.Dca(price_initialisation=20, step_price=2,
+                   force_buy_under_price=3500)
+    balance = 0
+    total_spent = 0
+    for index, _ in enumerate(history):
+        amount = dca.compute_amount_to_spend(history[0:index + 1], total_spent)
+        total_spent += amount
+        balance += amount / history[index]
 
-
-def test_get_total_spent_with_real_prices():
-    history = [price[1] for price in get_only_tuesday_days()]
-    amount = algo.Dca(price_initialisation=24, step_price=0.50, force_buy_under_price=3500).get_total_spent(history)
-    assert amount == 2012.0
-
-
-def test_get_balance_with_real_prices():
-    history = [price[1] for price in get_only_tuesday_days()]
-    amount = algo.Dca(price_initialisation=24, step_price=0.50, force_buy_under_price=3500).get_balance(history)
-    assert amount == 0.5208075112693835
+    average = algo.Dca.get_average_price(total_spent=total_spent, balance=balance)
+    assert average == 3716.647913018985
+    assert total_spent == 3944.0
+    assert balance == 1.0611712737665107
