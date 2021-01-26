@@ -1,6 +1,7 @@
 import dca as algo
 import datetime as dt
 import data as data
+import pytest
 
 
 def get_only_tuesday_days():
@@ -42,6 +43,18 @@ def test_amount_to_spend__returns_0_if_price_is_higher_that_last_min_price():
 def test_amount_to_spend__returns_additional_amount_when_there_is_new_min_price():
     amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 8, 13, 12, 7])
     assert amount == 22 + 23 + 24
+
+
+def test_amount_to_spend__throws_error_when_price_initialisation_is_bigger_than_max_amount_to_spend():
+    with pytest.raises(Exception):
+        algo.Dca(price_initialisation=30, step_price=1, max_amount_to_spend=20).compute_amount_to_spend(
+            [10])
+
+
+def test_amount_to_spend__returns_max_amount_to_spend_when_amount_to_spent_is_bigger():
+    amount = algo.Dca(price_initialisation=20, step_price=1, max_amount_to_spend=20).compute_amount_to_spend(
+        [10, 12, 7])
+    assert amount == 20
 
 
 def test_get_total_spent():

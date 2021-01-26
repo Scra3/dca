@@ -3,10 +3,15 @@ import typing
 
 class Dca:
     def __init__(self, price_initialisation: float, step_price: float,
-                 force_buy_under_price: typing.Optional[float] = None):
+                 force_buy_under_price: typing.Optional[float] = None,
+                 max_amount_to_spend: typing.Optional[float] = None):
         self.price_initialisation = price_initialisation
         self.step_price = step_price
         self.force_buy_under_price = force_buy_under_price
+        self.max_amount_to_spend = max_amount_to_spend
+
+        if self.max_amount_to_spend is not None and self.price_initialisation > self.max_amount_to_spend:
+            raise Exception('price_initialisation must be bigger or equal than max_amount_to_spend')
 
     def compute_amount_to_spend(self, price_history: typing.List[float]) -> float:
         if len(price_history) == 1:
@@ -28,6 +33,9 @@ class Dca:
 
         for index, _ in enumerate(price_history[min_index:last_index]):
             next_amount += (last_index - index) * self.step_price
+
+        if self.max_amount_to_spend is not None and self.max_amount_to_spend <= next_amount:
+            return self.max_amount_to_spend
 
         return next_amount
 
