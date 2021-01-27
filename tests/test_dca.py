@@ -25,6 +25,11 @@ def test_amount_to_spend__returns_initialise_price_and_step_price_sum():
     assert amount == 25
 
 
+def test_amount_to_spend__returns_an_amount_when_it_the_same_price_that_the_min():
+    amount = algo.Dca(price_initialisation=20, step_price=5).compute_amount_to_spend([10, 8, 8])
+    assert amount == 30
+
+
 def test_amount_to_spend__returns_amount_when_price_only_decrease():
     amount = algo.Dca(price_initialisation=20, step_price=1).compute_amount_to_spend([10, 7, 5])
     assert amount == 20 + 1 + 1

@@ -9,30 +9,28 @@ PRICES_HISTORY_NAME = "prices_history_name"
 
 
 class PriceHistoryMapper:
+    def __init__(self):
+        self._env = os.getenv('ENV', "production")
+        self._db: pickledb.PickleDB = self._load_db()
 
-    @staticmethod
-    def drop_db():
-        os.remove(PRICE_HISTORY_DB_TEST)
+    def drop_db(self):
+        if self._env == config.TEST_ENV:
+            os.remove(PRICE_HISTORY_DB_TEST)
+        else:
+            os.remove(PRICE_HISTORY_DB)
 
-    @staticmethod
-    def _load_db(dump: bool = True):
-        env = os.getenv('ENV', "production")
-
-        if env == config.TEST_ENV:
+    def _load_db(self, dump: bool = True):
+        if self._env == config.TEST_ENV:
             return pickledb.load(PRICE_HISTORY_DB_TEST, dump)
 
         return pickledb.load(PRICE_HISTORY_DB, dump)
 
-    @staticmethod
-    def save_price(price: float):
-        db = PriceHistoryMapper._load_db()
-        if not db.get(PRICES_HISTORY_NAME):
-            db.lcreate(PRICES_HISTORY_NAME)
+    def save_price(self, price: float):
+        if not self._db.get(PRICES_HISTORY_NAME):
+            self._db.lcreate(PRICES_HISTORY_NAME)
 
-        db.ladd(PRICES_HISTORY_NAME, price)
+        self._db.ladd(PRICES_HISTORY_NAME, price)
+        return self
 
-    @staticmethod
-    def get_prices() -> typing.List[float]:
-        db = PriceHistoryMapper._load_db(dump=False)
-
-        return db.lgetall(PRICES_HISTORY_NAME)
+    def get_prices(self) -> typing.List[float]:
+        return self._db.lgetall(PRICES_HISTORY_NAME)

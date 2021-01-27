@@ -2,36 +2,34 @@ import pickledb
 import os
 import config as config
 
-PRICE_HISTORY_DB = "db/portfolio_pickle_db"
+PORTFOLIO_DB = "db/portfolio_pickle_db"
 PORTFOLIO_DB_TEST = "db/portfolio_pickle_db_test"
 TOTAL_SPENT_NAME = "total_spent_name"
 
 
 class PortfolioMapper:
+    def __init__(self):
+        self._env = os.getenv('ENV', "production")
+        self._db: pickledb.PickleDB = self._load_db()
 
-    @staticmethod
-    def drop_db():
-        os.remove(PORTFOLIO_DB_TEST)
+    def drop_db(self):
+        if self._env == config.TEST_ENV:
+            os.remove(PORTFOLIO_DB_TEST)
+        else:
+            os.remove(PORTFOLIO_DB)
 
-    @staticmethod
-    def _load_db(dump: bool = True):
-        env = os.getenv('ENV', "production")
-
-        if env == config.TEST_ENV:
+    def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
+        if self._env == config.TEST_ENV:
             return pickledb.load(PORTFOLIO_DB_TEST, dump)
 
-        return pickledb.load(PRICE_HISTORY_DB, dump)
+        return pickledb.load(PORTFOLIO_DB, dump)
 
-    @staticmethod
-    def save_spent(price: float):
-        db = PortfolioMapper._load_db()
-        if not db.get(TOTAL_SPENT_NAME):
-            db.lcreate(TOTAL_SPENT_NAME)
+    def save_spent(self, price: float):
+        if not self._db.get(TOTAL_SPENT_NAME):
+            self._db.lcreate(TOTAL_SPENT_NAME)
 
-        db.ladd(TOTAL_SPENT_NAME, price)
+        self._db.ladd(TOTAL_SPENT_NAME, price)
+        return self
 
-    @staticmethod
-    def get_total_spend() -> float:
-        db = PortfolioMapper._load_db(dump=False)
-
-        return sum(db.lgetall(TOTAL_SPENT_NAME))
+    def get_total_spend(self) -> float:
+        return sum(self._db.lgetall(TOTAL_SPENT_NAME))
