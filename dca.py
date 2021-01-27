@@ -20,26 +20,29 @@ class Dca:
         if self.max_total_amount_to_spend is not None and self.price_initialisation > self.max_total_amount_to_spend:
             raise Exception('price_initialisation must be bigger or equal than max_total_amount_to_spend')
 
-    def compute_amount_to_spend(self, prices_history: typing.List[float],
+    def compute_amount_to_spend(self, current_price: float, prices_history: typing.List[float],
                                 total_spent: typing.Optional[float] = 0) -> float:
-        if len(prices_history) == 1:
+        current_price = prices_history[-1]
+        prices_history = prices_history[:-1]
+        if len(prices_history) == 0:
             return self.price_initialisation
 
-        last_index = len(prices_history) - 1
+        count_price = len(prices_history)
 
-        force_to_buy = self.force_buy_under_price is not None and self.force_buy_under_price >= prices_history[-1]
+        force_to_buy = self.force_buy_under_price is not None and self.force_buy_under_price >= current_price
         if force_to_buy:
-            next_amount = last_index * self.step_price + self.price_initialisation
+            next_amount = count_price * self.step_price + self.price_initialisation
         else:
             min_price, min_index = Dca._get_min_price(prices_history)
-            if last_index and min_price < prices_history[-1]:
+            if min_price < current_price:
                 return 0.0
 
-            prices = prices_history[min_index + 1:last_index + 1]
+            prices = prices_history[min_index + 1:count_price]
+            prices.append(current_price)
             next_amount = len(prices) * self.price_initialisation
 
-            for index, _ in enumerate(prices_history[min_index:last_index]):
-                next_amount += (last_index - index) * self.step_price
+            for index, _ in enumerate(prices_history[min_index:count_price + 1]):
+                next_amount += (count_price - index) * self.step_price
 
         next_total_spent = total_spent + next_amount
         if self.max_total_amount_to_spend is not None and self.max_total_amount_to_spend <= next_total_spent:
@@ -59,7 +62,7 @@ class Dca:
     def _get_min_price(prices_history) -> typing.Tuple[float, int]:
         """
             it returns the min price from a list
-            _get_min_price([8, 8, 8, 8]) => (8, 3)
+            _get_min_price([8, 8, 8, 8]) => (8, 2)
         """
-        price, index = min((x, -i) for i, x in enumerate(prices_history[:-1]))
+        price, index = min((x, -i) for i, x in enumerate(prices_history))
         return price, -index
