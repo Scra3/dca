@@ -33,4 +33,7 @@ class PriceHistoryMapper:
         return self
 
     def get_prices(self) -> typing.List[float]:
+        if not self._db.get(PRICES_HISTORY_NAME):
+            return []
+
         return self._db.lgetall(PRICES_HISTORY_NAME)

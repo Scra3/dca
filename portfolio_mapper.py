@@ -31,5 +31,8 @@ class PortfolioMapper:
         self._db.ladd(TOTAL_SPENT_NAME, price)
         return self
 
-    def get_total_spend(self) -> float:
+    def get_total_spent(self) -> float:
+        if not self._db.get(TOTAL_SPENT_NAME):
+            return 0
+
         return sum(self._db.lgetall(TOTAL_SPENT_NAME))

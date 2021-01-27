@@ -22,8 +22,6 @@ class Dca:
 
     def compute_amount_to_spend(self, current_price: float, prices_history: typing.List[float],
                                 total_spent: typing.Optional[float] = 0) -> float:
-        current_price = prices_history[-1]
-        prices_history = prices_history[:-1]
         if len(prices_history) == 0:
             return self.price_initialisation
 
@@ -41,7 +39,7 @@ class Dca:
             prices.append(current_price)
             next_amount = len(prices) * self.price_initialisation
 
-            for index, _ in enumerate(prices_history[min_index:count_price + 1]):
+            for index, _ in enumerate(prices_history[min_index:count_price]):
                 next_amount += (count_price - index) * self.step_price
 
         next_total_spent = total_spent + next_amount
