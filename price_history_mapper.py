@@ -1,12 +1,11 @@
 import pickledb
 import typing
 import os
+import config as config
 
 PRICE_HISTORY_DB = "db/price_history_pickle_db"
 PRICE_HISTORY_DB_TEST = "db/price_history_pickle_db_test"
 PRICES_HISTORY_NAME = "prices_history_name"
-
-TEST_ENV = "test"
 
 
 class PriceHistoryMapper:
@@ -19,7 +18,7 @@ class PriceHistoryMapper:
     def _load_db(dump: bool = True):
         env = os.getenv('ENV', "production")
 
-        if env == TEST_ENV:
+        if env == config.TEST_ENV:
             return pickledb.load(PRICE_HISTORY_DB_TEST, dump)
 
         return pickledb.load(PRICE_HISTORY_DB, dump)

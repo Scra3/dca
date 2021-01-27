@@ -20,26 +20,26 @@ class Dca:
         if self.max_total_amount_to_spend is not None and self.price_initialisation > self.max_total_amount_to_spend:
             raise Exception('price_initialisation must be bigger or equal than max_total_amount_to_spend')
 
-    def compute_amount_to_spend(self, price_history: typing.List[float],
+    def compute_amount_to_spend(self, prices_history: typing.List[float],
                                 total_spent: typing.Optional[float] = 0) -> float:
-        if len(price_history) == 1:
+        if len(prices_history) == 1:
             return self.price_initialisation
 
-        last_index = len(price_history) - 1
+        last_index = len(prices_history) - 1
 
-        force_to_buy = self.force_buy_under_price is not None and self.force_buy_under_price >= price_history[-1]
+        force_to_buy = self.force_buy_under_price is not None and self.force_buy_under_price >= prices_history[-1]
         if force_to_buy:
             next_amount = last_index * self.step_price + self.price_initialisation
         else:
-            min_price, min_index = Dca._get_min_price(price_history)
+            min_price, min_index = Dca._get_min_price(prices_history)
 
-            if last_index and min_price < price_history[-1]:
+            if last_index and min_price < prices_history[-1]:
                 return 0.0
 
-            prices = price_history[min_index + 1:last_index + 1]
+            prices = prices_history[min_index + 1:last_index + 1]
             next_amount = len(prices) * self.price_initialisation
 
-            for index, _ in enumerate(price_history[min_index:last_index]):
+            for index, _ in enumerate(prices_history[min_index:last_index]):
                 next_amount += (last_index - index) * self.step_price
 
         next_total_spent = total_spent + next_amount
@@ -57,5 +57,5 @@ class Dca:
         return total_spent / balance
 
     @staticmethod
-    def _get_min_price(price_history):
-        return min((min_val, min_index) for (min_index, min_val) in enumerate(price_history[0: -1]))
+    def _get_min_price(prices_history):
+        return min((min_val, min_index) for (min_index, min_val) in enumerate(prices_history[0: -1]))
