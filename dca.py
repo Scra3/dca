@@ -32,7 +32,6 @@ class Dca:
             next_amount = last_index * self.step_price + self.price_initialisation
         else:
             min_price, min_index = Dca._get_min_price(prices_history)
-
             if last_index and min_price < prices_history[-1]:
                 return 0.0
 
@@ -57,5 +56,10 @@ class Dca:
         return total_spent / balance
 
     @staticmethod
-    def _get_min_price(prices_history):
-        return min((min_val, min_index) for (min_index, min_val) in enumerate(prices_history[0: -1]))
+    def _get_min_price(prices_history) -> typing.Tuple[float, int]:
+        """
+            it returns the min price from a list
+            _get_min_price([8, 8, 8, 8]) => (8, 3)
+        """
+        price, index = min((x, -i) for i, x in enumerate(prices_history[:-1]))
+        return price, -index

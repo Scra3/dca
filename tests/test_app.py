@@ -34,5 +34,5 @@ def test_app_run_5_times(drop_databases_after_test):
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spend()
 
-    assert total_spent > 20 + 21 + 22 + 23 + 24
+    assert total_spent == 20 + 21 + 22 + 23 + 24
     assert len(prices) == 5
