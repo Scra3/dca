@@ -9,8 +9,8 @@ if __name__ == '__main__':
                                                max_total_amount_to_spend=2000))
     dca_runner.run()
 
-    amounts_spent = portfolio.Portfolio().get_amounts_spent()
-    balance = portfolio.Portfolio().get_balance()
-
-    print(amounts_spent)
-    print(balance)
+    print(f"balance: {portfolio.Portfolio().get_balance()}")
+    print(f"amounts spent: {portfolio.Portfolio().get_amounts_spent()}")
+    print(f"total: {portfolio.Portfolio().get_total_spent()}")
+    print(f"prices: {price_history.PriceHistory().get_prices()}")
+    print(f"average: {portfolio.Portfolio().get_average_price()}")
