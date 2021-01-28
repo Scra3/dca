@@ -4,10 +4,10 @@ import dca as algo
 
 
 class App:
-    def __init__(self, price_history: ph.PriceHistory):
+    def __init__(self, price_history: ph.PriceHistory, dca: algo.Dca):
         self._price_history = price_history
         self._portfolio = portfolio.Portfolio()
-        self._dca = algo.Dca(price_initialisation=20, step_price=1)
+        self._dca = dca
 
     def run(self):
         current_price = self._price_history.get_current_bitcoin_price()

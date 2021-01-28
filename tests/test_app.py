@@ -2,6 +2,7 @@ import portfolio as portfolio
 import price_history as ph
 import app as app
 import pytest
+import dca as algo
 
 
 @pytest.fixture
@@ -22,15 +23,16 @@ class PriceHistoryStub(ph.PriceHistory):
 
 
 def test_app_run_4_times(drop_databases_after_test):
-    app.App(price_history=PriceHistoryStub()).run()
-
+    app_runner = app.App(price_history=PriceHistoryStub(), dca=algo.Dca(price_initialisation=20, step_price=1))
+    
+    app_runner.run()
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
 
     assert total_spent == 20
     assert prices == [200]
 
-    app.App(price_history=PriceHistoryStub()).run()
+    app_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
@@ -38,7 +40,7 @@ def test_app_run_4_times(drop_databases_after_test):
     assert total_spent == 20 + 0
     assert prices == [200, 300]
 
-    app.App(price_history=PriceHistoryStub()).run()
+    app_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
@@ -46,7 +48,7 @@ def test_app_run_4_times(drop_databases_after_test):
     assert total_spent == 20 + 0 + 0
     assert prices == [200, 300, 250]
 
-    app.App(price_history=PriceHistoryStub()).run()
+    app_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
