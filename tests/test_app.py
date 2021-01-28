@@ -12,17 +12,44 @@ def drop_databases_after_test():
 
 
 class PriceHistoryStub(ph.PriceHistory):
+    prices = [200, 300, 250, 150]
+    count_call = -1
+
     @staticmethod
     def get_current_bitcoin_price() -> float:
-        return 200
+        PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
+        return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
 
-def test_app_run_5_times(drop_databases_after_test):
-    for _ in range(5):
-        app.App(price_history=PriceHistoryStub()).run()
+def test_app_run_4_times(drop_databases_after_test):
+    app.App(price_history=PriceHistoryStub()).run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
 
-    assert total_spent == 20 + 21 + 22 + 23 + 24
-    assert len(prices) == 5
+    assert total_spent == 20
+    assert prices == [200]
+
+    app.App(price_history=PriceHistoryStub()).run()
+
+    prices = ph.PriceHistory().get_prices()
+    total_spent = portfolio.Portfolio().get_total_spent()
+
+    assert total_spent == 20 + 0
+    assert prices == [200, 300]
+
+    app.App(price_history=PriceHistoryStub()).run()
+
+    prices = ph.PriceHistory().get_prices()
+    total_spent = portfolio.Portfolio().get_total_spent()
+
+    assert total_spent == 20 + 0 + 0
+    assert prices == [200, 300, 250]
+
+    app.App(price_history=PriceHistoryStub()).run()
+
+    prices = ph.PriceHistory().get_prices()
+    total_spent = portfolio.Portfolio().get_total_spent()
+
+    assert total_spent == 20 + 0 + 0 + (21 + 22 + 23)
+    assert prices == [200, 300, 250, 150]
