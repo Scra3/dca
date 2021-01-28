@@ -13,16 +13,16 @@ class PortfolioMapper:
         self._db: pickledb.PickleDB = self._load_db()
 
     def drop_db(self):
-        if self._env == config.TEST_ENV:
-            os.remove(PORTFOLIO_DB_TEST)
-        else:
-            os.remove(PORTFOLIO_DB)
+        os.remove(self._get_location_db())
 
     def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
-        if self._env == config.TEST_ENV:
-            return pickledb.load(PORTFOLIO_DB_TEST, dump)
+        return pickledb.load(self._get_location_db(), dump)
 
-        return pickledb.load(PORTFOLIO_DB, dump)
+    def _get_location_db(self):
+        if self._env == config.TEST_ENV:
+            return PORTFOLIO_DB_TEST
+
+        return PORTFOLIO_DB
 
     def save_spent(self, price: float):
         if not self._db.get(TOTAL_SPENT_NAME):

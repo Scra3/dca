@@ -14,16 +14,16 @@ class PriceHistoryMapper:
         self._db: pickledb.PickleDB = self._load_db()
 
     def drop_db(self):
-        if self._env == config.TEST_ENV:
-            os.remove(PRICE_HISTORY_DB_TEST)
-        else:
-            os.remove(PRICE_HISTORY_DB)
+        os.remove(self._get_location_db())
 
-    def _load_db(self, dump: bool = True):
-        if self._env == config.TEST_ENV:
-            return pickledb.load(PRICE_HISTORY_DB_TEST, dump)
+    def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
+        return pickledb.load(self._get_location_db(), dump)
 
-        return pickledb.load(PRICE_HISTORY_DB, dump)
+    def _get_location_db(self):
+        if self._env == config.TEST_ENV:
+            return PRICE_HISTORY_DB_TEST
+
+        return PRICE_HISTORY_DB
 
     def save_price(self, price: float):
         if not self._db.get(PRICES_HISTORY_NAME):
