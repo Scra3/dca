@@ -13,7 +13,9 @@ class PortfolioMapper:
         self._db: pickledb.PickleDB = self._load_db()
 
     def drop_db(self):
-        os.remove(self._get_location_db())
+        location = self._get_location_db()
+        if os.path.exists(location):
+            os.remove(location)
 
     def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
         return pickledb.load(self._get_location_db(), dump)
