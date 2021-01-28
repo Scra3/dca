@@ -1,18 +1,5 @@
 import dca as algo
-import datetime as dt
-import data as data
 import pytest
-
-
-def get_only_tuesday_days():
-    filtered_prices = []
-    for price in data.prices:
-        timestamp = price[0] / 1000
-        date = dt.datetime.fromtimestamp(timestamp)
-        if date.weekday() == 2:
-            filtered_prices.append(price)
-
-    return filtered_prices
 
 
 def test_amount_to_spend__returns_initialise_price_when_there_is_only_one_price():
@@ -81,25 +68,3 @@ def test_amount_to_spend__max_amount_to_spent_must_not_exceeded_when_force_buy_i
                       force_buy_under_price=20).compute_amount_to_spend(
         4, [10, 11, 7], total_spent=30)
     assert amount == 0
-
-
-def test_get_average_price():
-    price = algo.Dca.get_average_price(total_spent=10, balance=5)
-    assert price == 10 / 5
-
-
-def test_get_with_real_history():
-    history = [price[1] for price in get_only_tuesday_days()]
-    dca = algo.Dca(price_initialisation=20, step_price=2,
-                   force_buy_under_price=3500)
-    balance = 0
-    total_spent = 0
-    for index, _ in enumerate(history):
-        amount = dca.compute_amount_to_spend(history[index], history[0:index], total_spent)
-        total_spent += amount
-        balance += amount / history[index]
-
-    average = algo.Dca.get_average_price(total_spent=total_spent, balance=balance)
-    assert average == 3716.647913018985
-    assert total_spent == 3944.0
-    assert balance == 1.0611712737665107

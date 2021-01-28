@@ -53,14 +53,10 @@ class Dca:
         return next_amount
 
     @staticmethod
-    def get_average_price(total_spent: float, balance: float) -> float:
-        return total_spent / balance
-
-    @staticmethod
-    def _get_min_price(prices_history) -> typing.Tuple[float, int]:
+    def _get_min_price(prices_history: typing.List[float]) -> typing.Tuple[float, int]:
         """
             it returns the min price from a list
-            _get_min_price([8, 8, 8, 8]) => (8, 2)
+            _get_min_price([8, 8, 8, 8]) => (8, 3)
         """
         price, index = min((x, -i) for i, x in enumerate(prices_history))
         return price, -index
