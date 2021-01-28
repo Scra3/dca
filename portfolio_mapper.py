@@ -38,3 +38,13 @@ class PortfolioMapper:
             return 0
 
         return sum(self._db.lgetall(TOTAL_SPENT_NAME))
+
+    def get_amounts_spent(self) -> float:
+        """
+
+        :rtype: object
+        """
+        if not self._db.get(TOTAL_SPENT_NAME):
+            return 0
+
+        return self._db.lgetall(TOTAL_SPENT_NAME)

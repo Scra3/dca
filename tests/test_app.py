@@ -25,17 +25,16 @@ def get_only_tuesday_days():
     return filtered_prices
 
 
-class PriceHistoryStub(ph.PriceHistory):
-    prices = [200, 300, 250, 150]
-    count_call = -1
-
-    @staticmethod
-    def get_current_bitcoin_price() -> float:
-        PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
-        return PriceHistoryStub.prices[PriceHistoryStub.count_call]
-
-
 def test_app_run_4_times(drop_databases_after_test):
+    class PriceHistoryStub(ph.PriceHistory):
+        prices = [200, 300, 250, 150]
+        count_call = -1
+
+        @staticmethod
+        def get_current_bitcoin_price() -> float:
+            PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
+            return PriceHistoryStub.prices[PriceHistoryStub.count_call]
+
     app_runner = app.App(price_history=PriceHistoryStub(), dca=algo.Dca(price_initialisation=20, step_price=1))
 
     app_runner.run()
@@ -70,20 +69,28 @@ def test_app_run_4_times(drop_databases_after_test):
     assert prices == [200, 300, 250, 150]
 
 
-def test_get_with_real_history():
-    history = [price[1] for price in get_only_tuesday_days()]
-    dca = algo.Dca(price_initialisation=20, step_price=2,
-                   force_buy_under_price=3500)
-    spent_list = []
-    for index, _ in enumerate(history):
-        total_spent = portfolio.Portfolio.get_total_spent_from_list(amounts_spent=spent_list)
-        amount = dca.compute_amount_to_spend(history[index], history[0:index], total_spent)
-        spent_list.append(amount)
+def test_app_run_with_real_prices(drop_databases_after_test):
+    class PriceHistoryStub(ph.PriceHistory):
+        prices = [price[1] for price in get_only_tuesday_days()]
+        count_call = -1
 
-    balance = portfolio.Portfolio.get_balance(prices=history, amounts_spent=spent_list)
-    total_spent = portfolio.Portfolio.get_total_spent_from_list(amounts_spent=spent_list)
+        @staticmethod
+        def get_current_bitcoin_price() -> float:
+            PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
+            return PriceHistoryStub.prices[PriceHistoryStub.count_call]
+
+    app_runner = app.App(price_history=PriceHistoryStub(),
+                         dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=3600))
+    for _ in range(55):
+        app_runner.run()
+
+    prices = ph.PriceHistory().get_prices()
+    total_spent = portfolio.Portfolio().get_total_spent()
+    amounts_spent = portfolio.Portfolio().get_amounts_spent()
+    balance = portfolio.Portfolio().get_balance(prices=prices, amounts_spent=amounts_spent)
     average = portfolio.Portfolio.get_average_price(balance=balance, total_spent=total_spent)
 
-    assert balance == 1.0611712737665107
-    assert average == 3716.647913018985
-    assert total_spent == 3944.0
+    assert len(prices) == 55
+    assert total_spent == 2585
+    assert balance == 0.6857170924475
+    assert average == 3769.7762363972474
