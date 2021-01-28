@@ -3,7 +3,7 @@ import portfolio as portfolio
 import dca as algo
 
 
-class App:
+class DcaRunner:
     def __init__(self, price_history: ph.PriceHistory, dca: algo.Dca):
         self._price_history = price_history
         self._portfolio = portfolio.Portfolio()

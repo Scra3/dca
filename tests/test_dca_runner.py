@@ -1,6 +1,6 @@
 import portfolio as portfolio
 import price_history as ph
-import app as app
+import dca_runner as runner
 import pytest
 import dca as algo
 import datetime as dt
@@ -36,16 +36,16 @@ def test_app_run_4_times(drop_databases_after_test):
             PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
-    app_runner = app.App(price_history=PriceHistoryStub(), dca=algo.Dca(price_initialisation=20, step_price=1))
+    dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(), dca=algo.Dca(price_initialisation=20, step_price=1))
 
-    app_runner.run()
+    dca_runner.run()
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
 
     assert total_spent == 20
     assert prices == [200]
 
-    app_runner.run()
+    dca_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
@@ -53,7 +53,7 @@ def test_app_run_4_times(drop_databases_after_test):
     assert total_spent == 20 + 0
     assert prices == [200, 300]
 
-    app_runner.run()
+    dca_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
@@ -61,7 +61,7 @@ def test_app_run_4_times(drop_databases_after_test):
     assert total_spent == 20 + 0 + 0
     assert prices == [200, 300, 250]
 
-    app_runner.run()
+    dca_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
@@ -80,10 +80,10 @@ def test_app_run_with_real_prices(drop_databases_after_test):
             PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
-    app_runner = app.App(price_history=PriceHistoryStub(),
-                         dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=3600))
+    dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
+                                  dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=3600))
     for _ in range(55):
-        app_runner.run()
+        dca_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
@@ -107,12 +107,12 @@ def test_app_run_with_real_eth_prices(drop_databases_after_test):
             PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
-    app_runner = app.App(price_history=PriceHistoryStub(),
-                         dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=150,
-                                      max_total_amount_to_spend=2000))
+    dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
+                                  dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=150,
+                                               max_total_amount_to_spend=2000))
 
     for _ in range(52):
-        app_runner.run()
+        dca_runner.run()
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
