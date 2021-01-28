@@ -87,9 +87,8 @@ def test_app_run_with_real_prices(drop_databases_after_test):
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
-    amounts_spent = portfolio.Portfolio().get_amounts_spent()
-    balance = portfolio.Portfolio().get_balance(prices=prices, amounts_spent=amounts_spent)
-    average = portfolio.Portfolio.get_average_price(balance=balance, total_spent=total_spent)
+    balance = portfolio.Portfolio().get_balance()
+    average = portfolio.Portfolio().get_average_price()
 
     assert len(prices) == 55
     assert total_spent == 2585
@@ -116,9 +115,8 @@ def test_app_run_with_real_eth_prices(drop_databases_after_test):
 
     prices = ph.PriceHistory().get_prices()
     total_spent = portfolio.Portfolio().get_total_spent()
-    amounts_spent = portfolio.Portfolio().get_amounts_spent()
-    balance = portfolio.Portfolio().get_balance(prices=prices, amounts_spent=amounts_spent)
-    average = portfolio.Portfolio.get_average_price(balance=balance, total_spent=total_spent)
+    balance = portfolio.Portfolio().get_balance()
+    average = portfolio.Portfolio().get_average_price()
 
     assert len(prices) == 52
     assert balance == 12.559736986288318
