@@ -9,7 +9,7 @@ TOTAL_SPENT_NAME = "total_spent_name"
 
 class PortfolioMapper:
     def __init__(self):
-        self._env = os.getenv('ENV', "production")
+        self._env = os.getenv(config.ENV, config.TEST_ENV)
         self._db: pickledb.PickleDB = self._load_db()
 
     def drop_db(self):

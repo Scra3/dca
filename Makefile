@@ -2,7 +2,6 @@
 
 .PHONY: tests
 
-tests:	export ENV = test
 tests: ## Run all tests
 	python3 -m pytest -s tests/*
 
