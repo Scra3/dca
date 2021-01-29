@@ -76,8 +76,15 @@ def test_amount_to_spend__max_amount_to_spent_must_not_exceeded_when_force_buy_i
     assert amount == 0
 
 
-def test_as_dca_configuration():
-    json = '{"price_initialisation": 10, "step_price": 1}'
-    dca_configuration = dca.DcaConfiguration.serialise(json)
+def test_dca_configuration_serialise():
+    json = '{"price_initialisation": 10, "step_price": 1, ' \
+           '"force_buy_under_price": 20, "max_amount_to_spend": 10,' \
+           ' "max_total_amount_to_spend": 10}'
+
+    dca_configuration: dca.DcaConfiguration = dca.DcaConfiguration.serialise(json)
+
     assert dca_configuration.price_initialisation == 10
     assert dca_configuration.step_price == 1
+    assert dca_configuration.force_buy_under_price == 20
+    assert dca_configuration.max_total_amount_to_spend == 10
+    assert dca_configuration.max_amount_to_spend == 10
