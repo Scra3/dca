@@ -6,6 +6,7 @@ class DcaConfiguration:
     def __init__(self,
                  price_initialisation: float,
                  step_price: float,
+                 traded_pair: typing.Optional[str] = None,
                  force_buy_under_price: typing.Optional[float] = None,
                  max_amount_to_spend: typing.Optional[float] = None,
                  max_total_amount_to_spend: typing.Optional[float] = None):
@@ -14,6 +15,7 @@ class DcaConfiguration:
         self.force_buy_under_price = force_buy_under_price
         self.max_amount_to_spend = max_amount_to_spend
         self.max_total_amount_to_spend = max_total_amount_to_spend
+        self.traded_pair = traded_pair
 
     @classmethod
     def serialise(cls, json_as_str: str):
@@ -23,6 +25,7 @@ class DcaConfiguration:
     def as_dca_configuration(dct):
         return DcaConfiguration(price_initialisation=dct.get("price_initialisation"),
                                 step_price=dct.get("step_price"),
+                                traded_pair=dct.get("traded_pair"),
                                 force_buy_under_price=dct.get("force_buy_under_price"),
                                 max_amount_to_spend=dct.get("max_amount_to_spend"),
                                 max_total_amount_to_spend=dct.get("max_total_amount_to_spend"))

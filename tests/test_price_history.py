@@ -8,11 +8,6 @@ def drop_databases_after_test():
     model.PriceHistory().drop_db()
 
 
-def test_get_current_bitcoin_price():
-    price = model.PriceHistory().get_current_bitcoin_price()
-    assert price is not None
-
-
 def test_save_one_price_and_get_prices_persisted(drop_databases_after_test):
     model.PriceHistory().save_price(10)
 
