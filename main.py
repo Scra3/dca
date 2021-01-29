@@ -10,7 +10,7 @@ import time
 def job():
     with open(config.DCA_CONFIGURATION_FILE) as json_file:
         dca_configuration = model.DcaConfiguration.serialise(json_file.read())
-    dca_runner = runner.DcaRunner(price_history=model.PriceHistory(),
+    dca_runner = runner.DcaRunner(broker=model.Broker(),
                                   dca_configuration=dca_configuration)
     dca_runner.run()
     print(f"balance: {model.Portfolio().get_balance()}")
