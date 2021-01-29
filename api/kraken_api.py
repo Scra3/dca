@@ -23,3 +23,7 @@ class KrakenApi:
             time.sleep(WAITING_BEFORE_RETRY_SECOND)
             print("[retry] Kraken API is done")
             return KrakenApi.get_current_pair_price(pair)
+
+    @staticmethod
+    def send_buy_order(pair: str, amount_to_spent: float, price: float) -> float:
+        pass
