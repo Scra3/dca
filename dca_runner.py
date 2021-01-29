@@ -1,12 +1,10 @@
-import price_history as ph
-import portfolio as portfolio
-import dca as algo
+import model
 
 
 class DcaRunner:
-    def __init__(self, price_history: ph.PriceHistory, dca: algo.Dca):
+    def __init__(self, price_history: model.PriceHistory, dca: model.Dca):
         self._price_history = price_history
-        self._portfolio = portfolio.Portfolio()
+        self._portfolio = model.Portfolio()
         self._dca = dca
 
     def run(self):

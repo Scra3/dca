@@ -1,18 +1,16 @@
-import portfolio as portfolio
-import price_history as ph
 import dca_runner as runner
 import pytest
-import dca as dca
+import model
 import datetime as dt
-import data as data
+import data
 import typing
 
 
 @pytest.fixture
 def drop_databases_after_test():
     yield
-    portfolio.Portfolio().drop_db()
-    ph.PriceHistory().drop_db()
+    model.Portfolio().drop_db()
+    model.PriceHistory().drop_db()
 
 
 def get_only_tuesday_days(prices: typing.List[float]):
@@ -27,7 +25,7 @@ def get_only_tuesday_days(prices: typing.List[float]):
 
 
 def test_app_run_4_times(drop_databases_after_test):
-    class PriceHistoryStub(ph.PriceHistory):
+    class PriceHistoryStub(model.PriceHistory):
         prices = [200, 300, 250, 150]
         count_call = -1
 
@@ -37,42 +35,42 @@ def test_app_run_4_times(drop_databases_after_test):
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
     dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
-                                  dca=dca.Dca(dca.DcaConfiguration(price_initialisation=20, step_price=1)))
+                                  dca=model.Dca(model.DcaConfiguration(price_initialisation=20, step_price=1)))
 
     dca_runner.run()
-    prices = ph.PriceHistory().get_prices()
-    total_spent = portfolio.Portfolio().get_total_spent()
+    prices = model.PriceHistory().get_prices()
+    total_spent = model.Portfolio().get_total_spent()
 
     assert total_spent == 20
     assert prices == [200]
 
     dca_runner.run()
 
-    prices = ph.PriceHistory().get_prices()
-    total_spent = portfolio.Portfolio().get_total_spent()
+    prices = model.PriceHistory().get_prices()
+    total_spent = model.Portfolio().get_total_spent()
 
     assert total_spent == 20 + 0
     assert prices == [200, 300]
 
     dca_runner.run()
 
-    prices = ph.PriceHistory().get_prices()
-    total_spent = portfolio.Portfolio().get_total_spent()
+    prices = model.PriceHistory().get_prices()
+    total_spent = model.Portfolio().get_total_spent()
 
     assert total_spent == 20 + 0 + 0
     assert prices == [200, 300, 250]
 
     dca_runner.run()
 
-    prices = ph.PriceHistory().get_prices()
-    total_spent = portfolio.Portfolio().get_total_spent()
+    prices = model.PriceHistory().get_prices()
+    total_spent = model.Portfolio().get_total_spent()
 
     assert total_spent == 20 + 0 + 0 + (21 + 22 + 23)
     assert prices == [200, 300, 250, 150]
 
 
 def test_app_run_with_real_prices(drop_databases_after_test):
-    class PriceHistoryStub(ph.PriceHistory):
+    class PriceHistoryStub(model.PriceHistory):
         prices = [price[1] for price in get_only_tuesday_days(data.prices)]
         count_call = -1
 
@@ -82,15 +80,15 @@ def test_app_run_with_real_prices(drop_databases_after_test):
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
     dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
-                                  dca=dca.Dca(dca.DcaConfiguration(price_initialisation=20, step_price=1,
-                                                                   force_buy_under_price=3600)))
+                                  dca=model.Dca(model.DcaConfiguration(price_initialisation=20, step_price=1,
+                                                                       force_buy_under_price=3600)))
     for _ in range(55):
         dca_runner.run()
 
-    prices = ph.PriceHistory().get_prices()
-    total_spent = portfolio.Portfolio().get_total_spent()
-    balance = portfolio.Portfolio().get_balance()
-    average = portfolio.Portfolio().get_average_price()
+    prices = model.PriceHistory().get_prices()
+    total_spent = model.Portfolio().get_total_spent()
+    balance = model.Portfolio().get_balance()
+    average = model.Portfolio().get_average_price()
 
     assert len(prices) == 55
     assert total_spent == 2585
@@ -99,7 +97,7 @@ def test_app_run_with_real_prices(drop_databases_after_test):
 
 
 def test_app_run_with_real_eth_prices(drop_databases_after_test):
-    class PriceHistoryStub(ph.PriceHistory):
+    class PriceHistoryStub(model.PriceHistory):
         prices = [price[1] for price in get_only_tuesday_days(data.eth_prices)]
         count_call = -1
 
@@ -109,17 +107,17 @@ def test_app_run_with_real_eth_prices(drop_databases_after_test):
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
     dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
-                                  dca=dca.Dca(dca.DcaConfiguration(price_initialisation=20, step_price=1,
-                                                                   force_buy_under_price=150,
-                                                                   max_total_amount_to_spend=2000)))
+                                  dca=model.Dca(model.DcaConfiguration(price_initialisation=20, step_price=1,
+                                                                       force_buy_under_price=150,
+                                                                       max_total_amount_to_spend=2000)))
 
     for _ in range(52):
         dca_runner.run()
 
-    prices = ph.PriceHistory().get_prices()
-    total_spent = portfolio.Portfolio().get_total_spent()
-    balance = portfolio.Portfolio().get_balance()
-    average = portfolio.Portfolio().get_average_price()
+    prices = model.PriceHistory().get_prices()
+    total_spent = model.Portfolio().get_total_spent()
+    balance = model.Portfolio().get_balance()
+    average = model.Portfolio().get_average_price()
 
     assert len(prices) == 52
     assert balance == 12.559736986288318

@@ -1,5 +1,5 @@
-import price_history as model
 import pytest
+import model
 
 
 @pytest.fixture
