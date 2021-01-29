@@ -2,7 +2,7 @@ import portfolio as portfolio
 import price_history as ph
 import dca_runner as runner
 import pytest
-import dca as algo
+import dca as dca
 import datetime as dt
 import data as data
 import typing
@@ -36,7 +36,8 @@ def test_app_run_4_times(drop_databases_after_test):
             PriceHistoryStub.count_call = PriceHistoryStub.count_call + 1
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
-    dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(), dca=algo.Dca(price_initialisation=20, step_price=1))
+    dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
+                                  dca=dca.Dca(dca.DcaConfiguration(price_initialisation=20, step_price=1)))
 
     dca_runner.run()
     prices = ph.PriceHistory().get_prices()
@@ -81,7 +82,8 @@ def test_app_run_with_real_prices(drop_databases_after_test):
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
     dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
-                                  dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=3600))
+                                  dca=dca.Dca(dca.DcaConfiguration(price_initialisation=20, step_price=1,
+                                                                   force_buy_under_price=3600)))
     for _ in range(55):
         dca_runner.run()
 
@@ -107,8 +109,9 @@ def test_app_run_with_real_eth_prices(drop_databases_after_test):
             return PriceHistoryStub.prices[PriceHistoryStub.count_call]
 
     dca_runner = runner.DcaRunner(price_history=PriceHistoryStub(),
-                                  dca=algo.Dca(price_initialisation=20, step_price=1, force_buy_under_price=150,
-                                               max_total_amount_to_spend=2000))
+                                  dca=dca.Dca(dca.DcaConfiguration(price_initialisation=20, step_price=1,
+                                                                   force_buy_under_price=150,
+                                                                   max_total_amount_to_spend=2000)))
 
     for _ in range(52):
         dca_runner.run()

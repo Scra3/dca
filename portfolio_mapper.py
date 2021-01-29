@@ -20,7 +20,7 @@ class PortfolioMapper:
     def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
         return pickledb.load(self._get_location_db(), dump)
 
-    def _get_location_db(self):
+    def _get_location_db(self) -> str:
         if self._env == config.TEST_ENV:
             return PORTFOLIO_DB_TEST
 
