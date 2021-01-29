@@ -1,5 +1,11 @@
 import requests
 import time
+import enum
+
+
+class PairMapping(enum.Enum):
+    XBTEUR = "XXBTZEUR"
+    ETHEUR = "XETHZEUR"
 
 
 class KrakenApi:
@@ -10,7 +16,7 @@ class KrakenApi:
         }
         response = requests.get("https://api.kraken.com/0/public/Ticker", params=parameters)
         if response.ok:
-            return float(response.json()["result"]["XXBTZEUR"]["a"][0])
+            return float(response.json()["result"][PairMapping[pair].value]["a"][0])
         else:
             time.sleep(10)
             print("[retry] Kraken API is done")

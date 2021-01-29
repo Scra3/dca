@@ -4,5 +4,5 @@
   "force_buy_under_price": 20,
   "max_amount_to_spend": 10000,
   "max_total_amount_to_spend": 1000,
-  "traded_pair": "XBTEUR"
+  "traded_pair": "ETHEUR"
 }
