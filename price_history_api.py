@@ -5,8 +5,7 @@ class PriceHistoryApi:
     @staticmethod
     def get_current_bitcoin_price() -> float:
         parameters = {
-            "ids": "bitcoin",
-            "vs_currencies": "eur"
+            "pair": "XBTEUR"
         }
-        response = requests.get("https://api.coingecko.com/api/v3/simple/price", params=parameters)
-        return float(response.json()["bitcoin"]["eur"])
+        response = requests.get("https://api.kraken.com/0/public/Ticker", params=parameters)
+        return float(response.json()["result"]["XXBTZEUR"]["a"][0])
