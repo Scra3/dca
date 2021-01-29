@@ -32,7 +32,7 @@ json dca configuration:
 {
   "price_initialisation": 10,
   "step_price": 1,
-  "traded_pair": "XBTEUR"
+  "traded_pair": "XBTEUR",
   "force_buy_under_price": 20,
   "max_amount_to_spend": 10000,
   "max_total_amount_to_spend": 1000,
