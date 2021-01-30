@@ -11,6 +11,7 @@ class PairMapping(enum.Enum):
 
 class AssetMapping(enum.Enum):
     XBTEUR = "XXBT"
+    ETHEUR = "XETH"
 
 
 WAITING_BEFORE_RETRY_SECOND = 10
