@@ -39,22 +39,26 @@ class KrakenApi:
 
     def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
         volume = self._compute_volume_to_buy(amount_to_spent, price)
-        self._kraken.load_key(KRAKEN_KEY_FILE)
         try:
+            self._kraken.load_key(KRAKEN_KEY_FILE)
             response = self._kraken.query_private("AddOrder", {'pair': traded_pair,
                                                                'type': 'buy',
                                                                'ordertype': 'limit',
                                                                'price': price,
                                                                'volume': volume})
             print(response)
+        except FileNotFoundError:
+            print("[WARNING] KRAKEN KEY is not defined, buy order is not send")
         except requests.HTTPError:
             print(
                 f"[FAILED] Send buy order failed, "
                 f"trade_pair={traded_pair}, price={traded_pair}, amount_to_spent={traded_pair}")
 
     def get_balance(self, traded_pair: str) -> float:
-        self._kraken.load_key(KRAKEN_KEY_FILE)
         try:
+            self._kraken.load_key(KRAKEN_KEY_FILE)
             return self._kraken.query_private("Balance")["result"][AssetMapping[traded_pair].value]
+        except FileNotFoundError:
+            print("[WARNING] KRAKEN KEY is not defined, can not get balance from broker")
         except requests.HTTPError:
             print(f"[FAILED] get balance failed, trade_pair={traded_pair}")
