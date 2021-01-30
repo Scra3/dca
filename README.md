@@ -22,7 +22,7 @@ python3 main.py
 
 * **price_initialisation**: the price/amount of the first investment
 * **step_price**: the price increase each iteration
-* **traded_pair** : the pair to trade
+* **traded_pair** : the pair to trade (ETHEUR, BTCEUR)
 * **force_buy_under_price** (optional): under this price each iteration is bought
 * **max_amount_to_spend** (optional): the maximum amount to spend each iteration
 * **max_total_amount_to_spend** (optional): the total maximum to spend
