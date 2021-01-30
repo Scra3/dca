@@ -9,12 +9,17 @@ class PairMapping(enum.Enum):
     ETHEUR = "XETHZEUR"
 
 
+class AssetMapping(enum.Enum):
+    XBTEUR = "XXBT"
+
+
 WAITING_BEFORE_RETRY_SECOND = 10
 
 
 class KrakenApi:
     def __init__(self):
         self._kraken = krakenex.API()
+        self._kraken.load_key("kraken.key")
 
     def get_current_pair_price(self, pair: str) -> float:
         try:
@@ -27,3 +32,6 @@ class KrakenApi:
 
     def send_buy_order(self, pair: str, amount_to_spent: float, price: float) -> float:
         pass
+
+    def get_balance(self, traded_pair: str) -> float:
+        return self._kraken.query_private("Balance")["result"][AssetMapping[traded_pair].value]
