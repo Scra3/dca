@@ -20,6 +20,12 @@ python3 main.py
 
 ## Configure application
 
+```bash
+make generate-configuration
+```
+
+setup *dca_configuration_production.json* file: 
+
 * **price_initialisation**: the price/amount of the first investment
 * **step_price**: the price increase each iteration. For example, for the third iteration, **price_initialisation + 3 - 1 * step_price** will be invested.
 * **traded_pair** : the pair to trade (ETHEUR, BTCEUR, XBTUSDC)
@@ -38,3 +44,4 @@ json dca configuration:
   "max_total_amount_to_spend": 1000,
 }
 ```
+

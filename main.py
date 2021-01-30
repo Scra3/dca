@@ -3,8 +3,6 @@
 import dca_runner as runner
 import config
 import model
-import schedule
-import time
 
 
 def job():
@@ -28,7 +26,3 @@ def job():
 
 if __name__ == '__main__':
     job()
-    schedule.every(1).minutes.do(job)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
