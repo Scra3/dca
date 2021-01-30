@@ -4,3 +4,4 @@ __pycache__
 /db/*
 !db/.gitkeep
 /kraken.key
+/dca_configuration_production.json
