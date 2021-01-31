@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: tests run install clean generate-configuration
+.PHONY: tests run install clean-db generate-configuration run-production
 
 tests: ## Run all tests
 	python3 -m pytest -s tests/*
@@ -8,13 +8,16 @@ tests: ## Run all tests
 run: ## Run dca algorithm and buy bitcoin in kraken platform
 	python3 main.py
 
+run-production: ## Run dca algorithm in production mode
+	export ENV=production; python3 main.py
+
 install: ## Install dependencies
 	pip3 install -r requirement.txt
 
-clean: ## clean db files:
+clean-db: ## clean db files:
 	rm db/*db*
 
-generate-configuration: ## create dca configuralion json file:
+generate-configuration: ## create dca configuration json file:
 	cp dca_configuration.json dca_configuration_production.json
 
 help:
