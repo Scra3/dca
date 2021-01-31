@@ -5,3 +5,4 @@ __pycache__
 !db/.gitkeep
 /*.key
 /dca_configuration_production.json
+/log.txt
