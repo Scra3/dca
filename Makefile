@@ -3,7 +3,7 @@
 .PHONY: tests run install clean generate-configuration
 
 tests: ## Run all tests
-	python3 -m pytest -s tests/*
+	usr/bin/python3 -m pytest -s tests/*
 
 run: ## Run dca algorithm and buy bitcoin in kraken platform
 	python3 main.py
