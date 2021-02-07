@@ -1,5 +1,18 @@
 # dca
 
+The idea of this this algorithm is to smooth the entrance fee. It will buy all the new lows by weighting them.
+
+For example :
+
+The first buy will cost **10$**. The second will cost **11$**. The goal to increment the amount to invest is to attrack the price down to the bottom.
+
+It buy only the lower price, if the price increases, we will count each candle between the last last low and the new low and we make the sum of it.
+
+For example, if at each candle it increments to **1$** and it start to **10$** :
+
+* price : **9, 8, 13, 10, 9, `7`**
+* invest : **10, 11, 0(12), 0(13), 0(14), `12+13+14+15`** => When the price is **7$**, it invests **54$**(12+13+14+15).
+
 ## Run all tests
 
 ```bash
