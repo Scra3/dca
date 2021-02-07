@@ -62,15 +62,16 @@ Add a *kraken.key* file with the first line et api key and the second line the s
 
 ### Run
 
-#### Run iteration manually
+* Run iteration manually
 
-```bash
-make run-production
-```
+  ```bash
+  make run-production
+  ```
 
-#### Scheduling execution with cron task
+* Scheduling execution with cron task
 
-```bash
-* * * * * cd /home/pi/Documents/dca/ && make run >> log.txt 2>&1
-* * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
-```
+  ```bash
+  * * * * * cd /home/pi/Documents/dca/ && make run >> log.txt 2>&1
+  * * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
+  ```
+  
