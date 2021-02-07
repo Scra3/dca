@@ -1,4 +1,4 @@
-# dca
+# Weighted Dolar Cost Average (WDCA)
 
 The idea of this this algorithm is to smooth the entrance fee. It will buy all the new lows by weighting them.
 
