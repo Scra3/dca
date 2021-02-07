@@ -62,11 +62,13 @@ Add a *kraken.key* file with the first line et api key and the second line the s
 
 ### Run
 
+#### Run iteration manually
+
 ```bash
 make run-production
 ```
 
-or add cron task
+#### Scheduling execution with cron task
 
 ```bash
 * * * * * cd /home/pi/Documents/dca/ && make run >> log.txt 2>&1
