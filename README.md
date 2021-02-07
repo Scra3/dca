@@ -71,7 +71,7 @@ Add a *kraken.key* file with the first line et api key and the second line the s
 *  Scheduling execution with cron task
 
     ```bash
-    * * * * * cd /home/pi/Documents/dca/ && make run >> log.txt 2>&1
+    * * * * * cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
     * * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
     ```
   
