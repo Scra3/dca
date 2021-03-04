@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: tests run install clean-db generate-configuration run-production backup-db
+.PHONY: tests run install clean-db generate-configuration run-production backup-db projection
 
 BACKUP_DIRECTORY := $(shell date +%Y-%m-%d.%H:%M:%S)
 
@@ -24,6 +24,9 @@ backup-db: ## backup db files:
 
 generate-configuration: ## create dca configuration json file
 	cp dca_configuration.json dca_configuration_production.json
+
+projection: ## do a projection to estimate configuration parameters
+	python3 projection.py
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
