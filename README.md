@@ -74,4 +74,9 @@ Add a *kraken.key* file with the first line, and the second line the secret key.
     * * * * * cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
     * * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
     ```
-  
+
+## faq 
+
+* [ssh on raspberrypi](https://www.raspberrypi-france.fr/guide/connecter-ssh-raspbian/).
+
+* backups are generated in **backup** directory.
