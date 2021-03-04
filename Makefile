@@ -22,7 +22,7 @@ clean-db: ## clean db files:
 backup-db: ## backup db files:
 	mkdir -p backup; mkdir backup/$(BACKUP_DIRECTORY) && cp db/* backup/$(BACKUP_DIRECTORY)/ && echo "backup done"
 
-generate-configuration: ## create dca configuration json file:
+generate-configuration: ## create dca configuration json file
 	cp dca_configuration.json dca_configuration_production.json
 
 help:

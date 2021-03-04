@@ -58,7 +58,7 @@ json dca configuration:
 
 ### Add secret key for the kraken broker
 
-Add a *kraken.key* file with the first line et api key and the second line the secret key.
+Add a *kraken.key* file with the first line, and the second line the secret key.
 
 ### Run
 
