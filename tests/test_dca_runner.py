@@ -134,9 +134,9 @@ def test_dca_runner_4_times(drop_databases_after_test):
     assert prices == [200, 300, 250, 150]
 
 
-def test_dca_runner_with_real_prices(drop_databases_after_test):
+def test_dca_runner_with_real_btc_prices(drop_databases_after_test):
     class BrokerStub(model.Broker):
-        prices = [price[1] for price in get_only_tuesday_days(data.prices)]
+        prices = [price[1] for price in get_only_tuesday_days(data.btc_prices)]
         count_call = -1
 
         @staticmethod
