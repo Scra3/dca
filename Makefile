@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: tests run install clean-db generate-configuration run-production backup-db projection
+.PHONY: tests run install clean-db generate-configuration run-production backup-db projection run-front
 
 BACKUP_DIRECTORY := $(shell date +%Y-%m-%d.%H:%M:%S)
 
@@ -9,6 +9,9 @@ tests: ## Run all tests
 
 run: ## Run dca algorithm and buy bitcoin in kraken platform
 	python3 main.py
+
+run-front: ## Display graph
+	cd front/chart && npm run serve
 
 run-production: ## Run dca algorithm in production mode
 	export ENV=production && python3 main.py

@@ -82,6 +82,15 @@ Add a *kraken.key* file with the first line, and the second line the secret key.
     * * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
     ```
 
+### Display front
+
+Copy the backups files in *front > chart > data* and add json extension to the files.
+
+
+```bash
+make run-front
+```
+
 ## faq 
 
 * [ssh on raspberrypi](https://www.raspberrypi-france.fr/guide/connecter-ssh-raspbian/).
