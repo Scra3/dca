@@ -1,10 +1,12 @@
 import pickledb
 import mapper.mapper as mapper
 import os
+import typing
 
 PORTFOLIO_DB = "db/portfolio_pickle_db"
 PORTFOLIO_DB_TEST = "db/portfolio_pickle_db_test"
-TOTAL_SPENT_NAME = "total_spent_name"
+AMOUNTS_SPENT_KEY = "amounts_spent"
+BUYING_PRICES_KEY = "prices"
 
 
 class PortfolioMapper(mapper.Mapper):
@@ -20,21 +22,30 @@ class PortfolioMapper(mapper.Mapper):
     def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
         return pickledb.load(self._db_location, dump)
 
-    def save_spent(self, price: float):
-        if not self._db.get(TOTAL_SPENT_NAME):
-            self._db.lcreate(TOTAL_SPENT_NAME)
+    def save_spent(self, amount: float, price: float):
+        if not self._db.get(AMOUNTS_SPENT_KEY):
+            self._db.lcreate(AMOUNTS_SPENT_KEY)
+        if not self._db.get(AMOUNTS_SPENT_KEY):
+            self._db.lcreate(BUYING_PRICES_KEY)
 
-        self._db.ladd(TOTAL_SPENT_NAME, price)
+        self._db.ladd(AMOUNTS_SPENT_KEY, amount)
+        self._db.ladd(BUYING_PRICES_KEY, price)
         return self
 
+    def get_buying_prices(self) -> typing.List[float]:
+        if not self._db.get(BUYING_PRICES_KEY):
+            return []
+
+        return self._db.lgetall(BUYING_PRICES_KEY)
+
     def get_total_spent(self) -> float:
-        if not self._db.get(TOTAL_SPENT_NAME):
+        if not self._db.get(AMOUNTS_SPENT_KEY):
             return 0
 
-        return sum(self._db.lgetall(TOTAL_SPENT_NAME))
+        return sum(self._db.lgetall(AMOUNTS_SPENT_KEY))
 
-    def get_amounts_spent(self) -> float:
-        if not self._db.get(TOTAL_SPENT_NAME):
-            return 0
+    def get_amounts_spent(self) -> typing.List[float]:
+        if not self._db.get(AMOUNTS_SPENT_KEY):
+            return []
 
-        return self._db.lgetall(TOTAL_SPENT_NAME)
+        return self._db.lgetall(AMOUNTS_SPENT_KEY)

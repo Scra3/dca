@@ -10,7 +10,7 @@ def drop_databases_after_test():
 
 
 def test_get_total_spent_when_adding_on_amount_spent(drop_databases_after_test):
-    model.Portfolio().save_spent(10)
+    model.Portfolio().save_spent(amount=10, price=10)
 
     total_spent = model.Portfolio().get_total_spent()
 
@@ -18,8 +18,8 @@ def test_get_total_spent_when_adding_on_amount_spent(drop_databases_after_test):
 
 
 def test_get_total_spent_when_adding_several_amount_spent(drop_databases_after_test):
-    model.Portfolio().save_spent(10)
-    model.Portfolio().save_spent(24.5)
+    model.Portfolio().save_spent(amount=10, price=10)
+    model.Portfolio().save_spent(amount=24.5, price=10)
 
     total_spent = model.Portfolio().get_total_spent()
 
@@ -27,18 +27,16 @@ def test_get_total_spent_when_adding_several_amount_spent(drop_databases_after_t
 
 
 def test_get_average_price(drop_databases_after_test):
-    model.PriceHistory().save_price(10)
-    model.Portfolio().save_spent(20)
+    model.Portfolio().save_spent(amount=10, price=10)
 
     price = model.Portfolio().get_average_price()
     assert price == 10
 
 
 def test_get_balance(drop_databases_after_test):
-    model.PriceHistory().save_price(10)
-    model.PriceHistory().save_price(10)
-    model.Portfolio().save_spent(1)
-    model.Portfolio().save_spent(1)
+    model.Portfolio().save_spent(amount=1, price=10)
+    model.Portfolio().save_spent(amount=1, price=10)
 
     balance = model.Portfolio().get_balance()
+
     assert balance == 0.1 + 0.1

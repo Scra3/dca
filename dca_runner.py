@@ -14,9 +14,9 @@ class DcaRunner:
         history = self._price_history.get_prices()
         amount_to_spent = self._dca.compute_amount_to_spend(current_price=current_price, prices_history=history,
                                                             total_spent=self._portfolio.get_total_spent())
-        self._portfolio.save_spent(amount_to_spent)
         self._price_history.save_price(current_price)
 
         if amount_to_spent > 0:
+            self._portfolio.save_spent(amount=amount_to_spent, price=current_price)
             self._broker.send_buy_order(price=current_price, amount_to_spent=amount_to_spent,
                                         traded_pair=self._dca_configuration.traded_pair)

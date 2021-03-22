@@ -13,7 +13,7 @@ class Portfolio(mapper.PortfolioMapper):
     def get_balance(self) -> float:
         balance = 0
         amounts_spent = self.get_amounts_spent()
-        prices = self._price_history.get_prices()
+        prices = self.get_buying_prices()
         for index, _ in enumerate(prices):
             balance += amounts_spent[index] / prices[index]
 

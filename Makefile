@@ -5,7 +5,7 @@
 BACKUP_DIRECTORY := $(shell date +%Y-%m-%d.%H:%M:%S)
 
 tests: ## Run all tests
-	python3 -m pytest -s tests/*
+	python3 -m pytest -s
 
 run: ## Run dca algorithm and buy bitcoin in kraken platform
 	python3 main.py
@@ -14,7 +14,7 @@ run-production: ## Run dca algorithm in production mode
 	export ENV=production && python3 main.py
 
 install: ## Install dependencies
-	pip3 install -r requirement.txt
+	pip3 install -r requirements.txt
 
 clean-db: ## clean db files:
 	rm db/*db*

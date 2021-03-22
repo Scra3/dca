@@ -1,4 +1,4 @@
-# Weighted Dolar Cost Average (WDCA)
+# Weighted Dollar Cost Average (WDCA)
 
 The idea of this this algorithm is to smooth the entrance fee. It will buy all the new lows by weighting them.
 
@@ -12,6 +12,13 @@ For example, if at each candle it increments to **1$** and it starts to **10$** 
 
 * price : **9, 8, 13, 10, 9, `7`**
 * invest : **10, 11, 0(12), 0(13), 0(14), `12+13+14+15`** => when the price is **7$**, it invests **54$** (12+13+14+15).
+
+
+## Install
+
+```bash
+make install
+```
 
 ## Run all tests
 
