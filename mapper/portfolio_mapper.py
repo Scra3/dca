@@ -4,7 +4,7 @@ import os
 import typing
 
 PORTFOLIO_DB = "db/portfolio_pickle_db"
-PORTFOLIO_DB_TEST = "db/portfolio_pickle_db_test"
+PORTFOLIO_DB_TEST = "db/portfolio_pickle_db_test.json"
 AMOUNTS_SPENT_KEY = "amounts_spent"
 BUYING_PRICES_KEY = "prices"
 
@@ -12,8 +12,8 @@ BUYING_PRICES_KEY = "prices"
 class PortfolioMapper(mapper.Mapper):
     def __init__(self):
         super().__init__()
-        self._db_location = self._get_location_db(db_test=PORTFOLIO_DB_TEST, db_production=PORTFOLIO_DB)
-        self._db: pickledb.PickleDB = self._load_db()
+        self._db_location = self._get_db_location(db_test=PORTFOLIO_DB_TEST, db_production=PORTFOLIO_DB)
+        self._db = self._load_db()
 
     def drop_db(self):
         if os.path.exists(self._db_location):
@@ -25,9 +25,10 @@ class PortfolioMapper(mapper.Mapper):
     def save_spent(self, amount: float, price: float):
         if not self._db.get(AMOUNTS_SPENT_KEY):
             self._db.lcreate(AMOUNTS_SPENT_KEY)
-        if not self._db.get(AMOUNTS_SPENT_KEY):
+        if not self._db.get(BUYING_PRICES_KEY):
             self._db.lcreate(BUYING_PRICES_KEY)
 
+        self._save_timestamp()
         self._db.ladd(AMOUNTS_SPENT_KEY, amount)
         self._db.ladd(BUYING_PRICES_KEY, price)
         return self

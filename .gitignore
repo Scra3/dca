@@ -6,3 +6,4 @@ __pycache__
 /*.key
 /dca_configuration_production.json
 /log.txt
+front/chart/data

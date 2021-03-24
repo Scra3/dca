@@ -18,40 +18,34 @@
       msg: String
     },
     computed: {
-      decoratedData() {
+      points() {
         return prices["prices_history"].map((price, index) => {
-          const date = this.addDays(Date.now(), index).toISOString().split('T')[0];
-          return {time: date, value: price};
+          return {time: prices["timestamps"][index], value: price};
         });
       }
     },
     methods: {
-      addDays(date, days) {
-        const result = new Date(date);
-        result.setDate(result.getDate() + days);
-        return result;
-      },
       setData(lineSeries) {
-        lineSeries.setData(this.decoratedData);
+        lineSeries.setData(this.points);
       },
       setMarkers(lineSeries) {
-        const data = this.decoratedData.map(price => {
-          const isFound = portfolio["prices"].find(portfolioPrice => portfolioPrice === price["value"]);
-          return isFound === undefined ? null : {
-            time: price["time"],
+        const data = portfolio["timestamps"].map((timestamp) => {
+          return {
+            time: timestamp,
             position: 'belowBar',
             size: 1,
             color: 'red',
             shape: 'arrowUp',
           }
         });
-        lineSeries.setMarkers(data.filter(Boolean));
+        lineSeries.setMarkers(data);
       },
       displayChart() {
         const chart = createChart('chart', {width: 1000, height: 500});
         const lineSeries = chart.addLineSeries();
         this.setData(lineSeries);
         this.setMarkers(lineSeries);
+        chart.timeScale().fitContent();
       }
     }
   }
