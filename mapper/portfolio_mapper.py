@@ -22,13 +22,13 @@ class PortfolioMapper(mapper.Mapper):
     def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
         return pickledb.load(self._db_location, dump)
 
-    def save_spent(self, amount: float, price: float):
+    def save_spent(self, amount: float, price: float, time: float):
         if not self._db.get(AMOUNTS_SPENT_KEY):
             self._db.lcreate(AMOUNTS_SPENT_KEY)
         if not self._db.get(BUYING_PRICES_KEY):
             self._db.lcreate(BUYING_PRICES_KEY)
 
-        self._save_timestamp()
+        self._save_timestamp(time)
         self._db.ladd(AMOUNTS_SPENT_KEY, amount)
         self._db.ladd(BUYING_PRICES_KEY, price)
         return self

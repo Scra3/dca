@@ -1,5 +1,4 @@
 import os
-import time
 import config as config
 import pickledb
 import typing
@@ -21,12 +20,8 @@ class Mapper(abc.ABC):
             return db_production
         return db_test
 
-    def _save_timestamp(self):
+    def _save_timestamp(self, time: float):
         if not self._db.get(TIMESTAMPS_KEY):
             self._db.lcreate(TIMESTAMPS_KEY)
 
-        self._db.ladd(TIMESTAMPS_KEY, self._get_timestamp())
-
-    @staticmethod
-    def _get_timestamp():
-        return time.time()
+        self._db.ladd(TIMESTAMPS_KEY, time)
