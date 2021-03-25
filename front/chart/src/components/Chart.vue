@@ -1,5 +1,11 @@
 <template>
     <div class="chart">
+        <ul>
+            <li>Total amount spent: {{ totalAmountSpent }}</li>
+            <li>Average: {{ averagePrice }}</li>
+            <li>Estimated balance: {{ balance }}</li>
+        </ul>
+
         <div id="chart"></div>
     </div>
 </template>
@@ -10,32 +16,46 @@
   import portfolio from '../../data/portfolio_pickle_db_test.json'
 
   export default {
-    name: 'HelloWorld',
+    name: 'Chart',
     mounted() {
       this.displayChart();
-    },
-    props: {
-      msg: String
     },
     computed: {
       points() {
         return prices["prices_history"].map((price, index) => {
           return {time: prices["timestamps"][index], value: price};
         });
-      }
+      },
+      totalAmountSpent() {
+        return portfolio["amounts_spent"].reduce((totalAmount, amount) => {
+          return totalAmount + amount
+        }, 0);
+      },
+      balance() {
+        const amounts_spent = portfolio["amounts_spent"];
+        const portfolio_prices = portfolio["prices"];
+
+        return portfolio_prices.reduce((computedBalance, price, index) => {
+          return computedBalance + (amounts_spent[index] / portfolio_prices[index])
+        }, 0);
+      },
+      averagePrice() {
+        return this.totalAmountSpent / this.balance;
+      },
     },
     methods: {
       setData(lineSeries) {
         lineSeries.setData(this.points);
       },
       setMarkers(lineSeries) {
-        const data = portfolio["timestamps"].map((timestamp) => {
+        const data = portfolio["timestamps"].map((timestamp, index) => {
           return {
             time: timestamp,
             position: 'belowBar',
             size: 1,
             color: 'red',
             shape: 'arrowUp',
+            text: `${portfolio["amounts_spent"][index]}`,
           }
         });
         lineSeries.setMarkers(data);
