@@ -4,7 +4,6 @@ import data
 import pytest
 import typing
 import datetime as dt
-import api
 
 
 def get_only_tuesday_days(prices: typing.List[float]):

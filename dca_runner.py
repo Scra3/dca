@@ -13,10 +13,10 @@ class DcaRunner:
 
     def run(self):
         current_price = self._broker.get_current_pair_price(self._dca_configuration.traded_pair)
-        history = self._price_history.get_prices()
+        prices = self._price_history.get_prices()
         total_spent = self._portfolio.get_total_spent()
         amount_to_spent = self._dca.compute_amount_to_spend(current_price=current_price,
-                                                            prices_history=history,
+                                                            prices_history=prices,
                                                             total_spent=total_spent)
         timestamp = time.time()
         self._price_history.save_price(price=current_price, time=timestamp)

@@ -44,7 +44,7 @@ class Dca:
             raise Exception('price_initialisation must be bigger or equal than max_total_amount_to_spend')
 
     def compute_amount_to_spend(self, current_price: float, prices_history: typing.List[float],
-                                total_spent: typing.Optional[float] = 0) -> float:
+                                total_spent: typing.Optional[float] = 0.0) -> float:
         if len(prices_history) == 0:
             return self._config.price_initialisation
 
