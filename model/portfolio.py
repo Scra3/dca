@@ -19,16 +19,5 @@ class Portfolio(mapper.PortfolioMapper):
 
         return balance
 
-    def get_unrealized_gains(self) -> float:
-        balance = self.get_balance()
-        current_price = self._price_history.get_prices()[-1]
-        value = balance * current_price
-
-        return value - self.get_total_spent()
-
-    def get_unrealized_gains_in_percentage(self) -> float:
-        balance = self.get_balance()
-        current_price = self._price_history.get_prices()[-1]
-        value = balance * current_price
-
-        return value * 100 / self.get_total_spent() - 100
+    def get_total_spent(self) -> float:
+        return sum(self.get_amounts_spent())

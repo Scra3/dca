@@ -39,12 +39,6 @@ class PortfolioMapper(mapper.Mapper):
 
         return self._db.lgetall(BUYING_PRICES_KEY)
 
-    def get_total_spent(self) -> float:
-        if not self._db.get(AMOUNTS_SPENT_KEY):
-            return 0
-
-        return sum(self._db.lgetall(AMOUNTS_SPENT_KEY))
-
     def get_amounts_spent(self) -> typing.List[float]:
         if not self._db.get(AMOUNTS_SPENT_KEY):
             return []

@@ -17,11 +17,7 @@ def job():
     print(f"average: {model.Portfolio().get_average_price()}")
     print(f"prices: {model.price_history.PriceHistory().get_prices()}")
 
-    print(f"----------------MAIN INFO----------------------")
-    print(f"Unrealized gain: {model.Portfolio().get_unrealized_gains()}")
-    print(f"Unrealized percentage gain: {model.Portfolio().get_unrealized_gains_in_percentage()}%")
     print(f"Broker balance: {model.Broker().get_balance(dca_configuration.traded_pair)}")
-    print(f"-----------------------------------------------")
 
 
 if __name__ == '__main__':
