@@ -1,5 +1,5 @@
 import os
-import config as config
+import constants
 import pickledb
 import typing
 import abc
@@ -9,14 +9,14 @@ TIMESTAMPS_KEY = "timestamps"
 
 class Mapper(abc.ABC):
     def __init__(self):
-        self._env = os.getenv(config.ENV, config.TEST_ENV)
+        self._env = os.getenv(constants.ENV, constants.TEST_ENV)
         self._db_location: typing.Optional[str] = None
         self._db: typing.Optional[pickledb.PickleDB] = None
 
     def _get_db_location(self, db_test: str, db_production: str) -> str:
-        if self._env == config.TEST_ENV:
+        if self._env == constants.TEST_ENV:
             return db_test
-        elif self._env == config.PRODUCTION_ENV:
+        elif self._env == constants.PRODUCTION_ENV:
             return db_production
         return db_test
 

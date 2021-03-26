@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import {createChart} from 'lightweight-charts';
+  import {createChart, LineStyle} from 'lightweight-charts';
   import prices from '../../data/price_history_pickle_db_test.json'
   import portfolio from '../../data/portfolio_pickle_db_test.json'
 
@@ -61,11 +61,20 @@
         lineSeries.setMarkers(data);
       },
       displayChart() {
-        const chart = createChart('chart', {width: 1000, height: 500});
+        const chart = createChart('chart', {width: 1000, height: 800});
         const lineSeries = chart.addLineSeries();
         this.setData(lineSeries);
         this.setMarkers(lineSeries);
         chart.timeScale().fitContent();
+
+        lineSeries.createPriceLine({
+          price: this.averagePrice,
+          color: 'green',
+          lineWidth: 4,
+          lineStyle: LineStyle.Dotted,
+          axisLabelVisible: true,
+          title: 'Average price',
+        });
       }
     }
   }
