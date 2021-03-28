@@ -1,12 +1,13 @@
 <template>
     <div class="chart">
-        <ul>
-            <li>Total amount spent: {{ totalAmountSpent }}</li>
-            <li>Average: {{ averagePrice }}</li>
-            <li>Estimated balance: {{ balance }}</li>
-        </ul>
-
-        <div id="chart"></div>
+        <section class="overview">
+            <h3>Total amount spent: {{ totalAmountSpent.toFixed(2) }}</h3>
+            <h3>Average: {{ averagePrice.toFixed(2) }}</h3>
+            <h3> Estimated balance: {{ balance.toFixed(2) }}</h3>
+        </section>
+        <section class="content">
+            <div id="chart"></div>
+        </section>
     </div>
 </template>
 
@@ -60,12 +61,19 @@
         });
         lineSeries.setMarkers(data);
       },
-      displayChart() {
+      setupChartOptions: function (chart) {
+        chart.timeScale().fitContent();
+        chart.applyOptions({
+          handleScroll: false,
+          handleScale: false,
+        });
+      }, displayChart() {
         const chart = createChart('chart', {width: 1000, height: 800});
         const lineSeries = chart.addLineSeries();
         this.setData(lineSeries);
         this.setMarkers(lineSeries);
-        chart.timeScale().fitContent();
+
+        this.setupChartOptions(chart);
 
         lineSeries.createPriceLine({
           price: this.averagePrice,
@@ -83,6 +91,25 @@
 <style scoped>
     .chart {
         display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .content {
+        display: flex;
         justify-content: center;
+        flex-direction: column;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        padding: 10px;
+    }
+
+    .overview {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        padding: 10px;
+        background-color: #222831;
+        color: white;
     }
 </style>

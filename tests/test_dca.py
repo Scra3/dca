@@ -51,6 +51,7 @@ def test_amount_to_spend__returns_0_when_total_spent_is_bigger_than_the_max_tota
         8, [10, 9], total_spent=12)
     assert amount == 0
 
+
 def test_amount_to_spend__raise_error_when_max_total_amount_to_spend_is_lesser_than_price_initialisation():
     with pytest.raises(Exception):
         model.Dca(model.DcaConfiguration(price_initialisation=10, step_price=1,
