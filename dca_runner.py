@@ -24,7 +24,7 @@ class DcaRunner:
         if amount_to_spent > 0:
             self._broker.send_buy_order(price=current_price, amount_to_spent=amount_to_spent,
                                         traded_pair=self._dca_configuration.traded_pair)
-            self._portfolio.save_spent(amount=amount_to_spent, price=current_price, time=timestamp)
+            model.Order().save(amount_to_spent, current_price, timestamp)
             Log().success(
                 f"buy order is sent - amount_to_spent={amount_to_spent}, current_price={current_price}").save()
         else:

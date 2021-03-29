@@ -57,12 +57,11 @@ class KrakenApi:
             f"trade_pair={traded_pair}, price={traded_pair}, amount_to_spent={traded_pair}"
             Log().error(message).save()
 
-
-def get_balance(self, traded_pair: str) -> float:
-    try:
-        self._kraken.load_key(KRAKEN_KEY_FILE)
-        return self._kraken.query_private("Balance")["result"][AssetMapping[traded_pair].value]
-    except FileNotFoundError:
-        Log().warning("KRAKEN KEY is not defined, can not get balance from broker").save()
-    except requests.HTTPError:
-        Log().error(f"get balance failed, trade_pair={traded_pair}").save()
+    def get_balance(self, traded_pair: str) -> float:
+        try:
+            self._kraken.load_key(KRAKEN_KEY_FILE)
+            return self._kraken.query_private("Balance")["result"][AssetMapping[traded_pair].value]
+        except FileNotFoundError:
+            Log().warning("KRAKEN KEY is not defined, can not get balance from broker").save()
+        except requests.HTTPError:
+            Log().error(f"get balance failed, trade_pair={traded_pair}").save()

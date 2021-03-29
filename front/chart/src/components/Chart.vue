@@ -14,7 +14,7 @@
 <script>
   import {createChart, LineStyle} from 'lightweight-charts';
   import prices from '../../data/price_history_pickle_db_test.json'
-  import portfolio from '../../data/portfolio_pickle_db_test.json'
+  import portfolio from '../../data/orders_pickle_db_test.json'
 
   export default {
     name: 'Chart',
