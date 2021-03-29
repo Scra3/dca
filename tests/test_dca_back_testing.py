@@ -1,9 +1,9 @@
 import dca_runner as runner
 import model
 import data
-import pytest
 import typing
 import datetime as dt
+from fixtures import drop_databases_after_test
 
 
 def get_only_tuesday_days(prices: typing.List[float]):
@@ -15,13 +15,6 @@ def get_only_tuesday_days(prices: typing.List[float]):
             filtered_prices.append(price)
 
     return filtered_prices
-
-
-@pytest.fixture
-def drop_databases_after_test():
-    yield
-    model.Portfolio().drop_db()
-    model.PriceHistory().drop_db()
 
 
 def test_dca_runner_with_real_btc_prices(drop_databases_after_test):

@@ -1,13 +1,6 @@
 import dca_runner as runner
-import pytest
 import model
-
-
-@pytest.fixture
-def drop_databases_after_test():
-    yield
-    model.Portfolio().drop_db()
-    model.PriceHistory().drop_db()
+from fixtures import drop_databases_after_test
 
 
 def test_dca_runner_does_not_call_buy_method_when_amount_spent_is_0(drop_databases_after_test):
