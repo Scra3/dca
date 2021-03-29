@@ -19,7 +19,7 @@ class DcaRunner:
                                                             prices_history=prices,
                                                             total_spent=total_spent)
         timestamp = time.time()
-        self._price_history.save_price(price=current_price, time=timestamp)
+        self._price_history.save(price=current_price, timestamp=timestamp)
 
         if amount_to_spent > 0:
             self._broker.send_buy_order(price=current_price, amount_to_spent=amount_to_spent,

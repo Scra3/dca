@@ -21,13 +21,12 @@ class PriceHistoryMapper(mapper.Mapper):
     def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
         return pickledb.load(self._db_location, dump)
 
-    def save_price(self, price: float, time: float):
+    def _save(self, price: float, time: float):
         if not self._db.get(PRICES_HISTORY_KEY):
             self._db.lcreate(PRICES_HISTORY_KEY)
 
-        self._save_timestamp(time)
         self._db.ladd(PRICES_HISTORY_KEY, price)
-        return self
+        return self._save_timestamp(time)
 
     def get_prices(self) -> typing.List[float]:
         if not self._db.get(PRICES_HISTORY_KEY):

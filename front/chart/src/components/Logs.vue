@@ -27,7 +27,7 @@
       logs() {
         return logsData.messages.map((message, index) => {
           return {message: message, timestamp: logsData.timestamps[index], type: logsData.types[index]}
-        })
+        }).reverse()
       }
     }
   }
@@ -40,13 +40,17 @@
     }
 
     .logs {
-        width: 25em;
+        width: 30em;
         word-wrap: break-word;
         padding: 10px;
         overflow-y: scroll;
         background-color: #F6F6F6;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
         height: 900px;
+    }
+
+    li {
+        margin-bottom: 20px;
     }
 
     .date {
