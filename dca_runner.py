@@ -1,6 +1,6 @@
 import time
-
 import model
+from model.log import Log
 
 
 class DcaRunner:
@@ -22,6 +22,11 @@ class DcaRunner:
         self._price_history.save_price(price=current_price, time=timestamp)
 
         if amount_to_spent > 0:
-            self._portfolio.save_spent(amount=amount_to_spent, price=current_price, time=timestamp)
             self._broker.send_buy_order(price=current_price, amount_to_spent=amount_to_spent,
                                         traded_pair=self._dca_configuration.traded_pair)
+            self._portfolio.save_spent(amount=amount_to_spent, price=current_price, time=timestamp)
+            Log().success(
+                f"buy order is sent - amount_to_spent={amount_to_spent}, current_price={current_price}").save()
+        else:
+            Log().info(
+                f"buy order is not sent - amount_to_spent={amount_to_spent}, current_price={current_price}").save()

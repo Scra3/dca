@@ -2,6 +2,7 @@ import requests
 import time
 import enum
 import krakenex
+from model.log import Log
 
 
 class PairMapping(enum.Enum):
@@ -27,10 +28,11 @@ class KrakenApi:
     def get_current_pair_price(self, pair: str) -> float:
         try:
             response = self._kraken.query_public(f"Ticker?pair={pair}")
+            Log().info(f"kraken fetch {pair} price").save()
             return float(response["result"][PairMapping[pair].value]["a"][0])
         except requests.HTTPError:
             time.sleep(WAITING_BEFORE_RETRY_SECOND)
-            print("[retry] Kraken API is done")
+            Log().error(f"kraken fetch {pair} fail").save()
             return self.get_current_pair_price(pair)
 
     @staticmethod
@@ -41,24 +43,26 @@ class KrakenApi:
         volume = self._compute_volume_to_buy(amount_to_spent, price)
         try:
             self._kraken.load_key(KRAKEN_KEY_FILE)
-            response = self._kraken.query_private("AddOrder", {'pair': traded_pair,
-                                                               'type': 'buy',
-                                                               'ordertype': 'limit',
-                                                               'price': price,
-                                                               'volume': volume})
-            print(response)
-        except FileNotFoundError:
-            print("[WARNING] KRAKEN KEY is not defined, buy order is not send")
-        except requests.HTTPError:
-            print(
-                f"[FAILED] Send buy order failed, "
-                f"trade_pair={traded_pair}, price={traded_pair}, amount_to_spent={traded_pair}")
+            self._kraken.query_private("AddOrder", {'pair': traded_pair,
+                                                    'type': 'buy',
+                                                    'ordertype': 'limit',
+                                                    'price': price,
+                                                    'volume': volume})
+            Log().success("send order is a successfully").save()
 
-    def get_balance(self, traded_pair: str) -> float:
-        try:
-            self._kraken.load_key(KRAKEN_KEY_FILE)
-            return self._kraken.query_private("Balance")["result"][AssetMapping[traded_pair].value]
         except FileNotFoundError:
-            print("[WARNING] KRAKEN KEY is not defined, can not get balance from broker")
+            Log().warning("KRAKEN KEY is not defined, buy order is not send").save()
         except requests.HTTPError:
-            print(f"[FAILED] get balance failed, trade_pair={traded_pair}")
+            message = f"[FAILED] Send buy order failed, "
+            f"trade_pair={traded_pair}, price={traded_pair}, amount_to_spent={traded_pair}"
+            Log().error(message).save()
+
+
+def get_balance(self, traded_pair: str) -> float:
+    try:
+        self._kraken.load_key(KRAKEN_KEY_FILE)
+        return self._kraken.query_private("Balance")["result"][AssetMapping[traded_pair].value]
+    except FileNotFoundError:
+        Log().warning("KRAKEN KEY is not defined, can not get balance from broker").save()
+    except requests.HTTPError:
+        Log().error(f"get balance failed, trade_pair={traded_pair}").save()

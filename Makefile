@@ -5,7 +5,7 @@
 BACKUP_DIRECTORY := $(shell date +%Y-%m-%d.%H:%M:%S)
 
 tests: ## Run all tests
-	python3 -m pytest -s
+	python3 -m pytest
 
 run: ## Run dca algorithm and buy bitcoin in kraken platform
 	python3 main.py

@@ -3,9 +3,9 @@
         <h2>Logs</h2>
 
         <ul>
-            <li v-for="log in logs" :key="log.text" :class="log.type">
+            <li v-for="log in logs" :key="log.message" :class="log.type">
                 <span class="date">{{ convertTimestampToDate(log.timestamp)}}</span> -
-                {{log.text}}
+                {{log.message}}
             </li>
         </ul>
 
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+  import logsData from '../../data/log_pickle_db_test.json'
+
   export default {
     name: 'Logs',
     methods: {
@@ -23,15 +25,9 @@
     },
     computed: {
       logs() {
-        return [
-          {
-            text: "Error dpzojdpojezfoezfpjezpfjpefojpezpojfezpojfpojzefpojzefpjozepojfezpojfzepoj buying xrp",
-            type: "error",
-            "timestamp": 1616965598
-          },
-          {text: "log1", type: "warning", "timestamp": 1616965598},
-          {text: "log1", type: "info", "timestamp": 1616965598},
-        ]
+        return logsData.messages.map((message, index) => {
+          return {message: message, timestamp: logsData.timestamps[index], type: logsData.types[index]}
+        })
       }
     }
   }
@@ -67,5 +63,9 @@
 
     .info {
         color: black;
+    }
+
+    .success {
+        color: green;
     }
 </style>
