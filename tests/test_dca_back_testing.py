@@ -55,7 +55,7 @@ def test_dca_runner_with_real_btc_prices(drop_databases_after_test):
     assert average == 3769.7762363972474
 
 
-def test_dca_runner_with_real_eth_prices():
+def test_dca_runner_with_real_eth_prices(drop_databases_after_test):
     class BrokerStub(model.Broker):
         prices = [price[1] for price in get_only_tuesday_days(data.eth_prices)]
         count_call = -1
