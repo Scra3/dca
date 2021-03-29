@@ -1,14 +1,16 @@
 <template>
     <div class="logs">
         <h2>Logs</h2>
+        <label for="filter">Display only <span class="error">Error</span> and <span class="warning">Warning</span>
+            errors</label>
+        <input id="filter" type="checkbox" value="filtered" v-model="isFiltered"/>
 
         <ul>
-            <li v-for="log in logs" :key="log.message" :class="log.type">
+            <li v-for="log in filteredLogs" :key="log.message" :class="log.type">
                 <span class="date">{{ convertTimestampToDate(log.timestamp)}}</span> -
                 {{log.message}}
             </li>
         </ul>
-
     </div>
 </template>
 
@@ -17,6 +19,11 @@
 
   export default {
     name: 'Logs',
+    data() {
+      return {
+        isFiltered: []
+      }
+    },
     methods: {
       convertTimestampToDate(timestamp) {
         const date = new Date(timestamp * 1000);
@@ -28,6 +35,11 @@
         return logsData.messages.map((message, index) => {
           return {message: message, timestamp: logsData.timestamps[index], type: logsData.types[index]}
         }).reverse()
+      },
+      filteredLogs() {
+        return this.logs.filter(log => {
+          return this.isFiltered.length > 0 ? (log.type === "error" || log.type === "warning") : true
+        })
       }
     }
   }
