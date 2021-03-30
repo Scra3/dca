@@ -15,7 +15,7 @@ def test_dca_runner_does_not_call_buy_method_when_amount_spent_is_0(drop_databas
             BrokerStub.get_current_pair_price_count_call = count_call
             return BrokerStub.prices[count_call]
 
-        def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
+        def send_buy_order(self, traded_pair: str, amount_to_spend: float, price: float):
             count_call = BrokerStub.send_buy_order_count_call
             BrokerStub.send_buy_order_count_call = count_call + 1
             pass
@@ -46,7 +46,7 @@ def test_dca_runner_calls_buy_method_when_amount_spent_is_bigger_than_0(drop_dat
             BrokerStub.get_current_pair_price_count_call = count_call
             return BrokerStub.prices[count_call]
 
-        def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
+        def send_buy_order(self, traded_pair: str, amount_to_spend: float, price: float):
             count_call = BrokerStub.send_buy_order_count_call
             BrokerStub.send_buy_order_count_call = count_call + 1
             pass
@@ -73,7 +73,7 @@ def test_dca_runner_4_times(drop_databases_after_test):
             BrokerStub.count_call = BrokerStub.count_call + 1
             return BrokerStub.prices[BrokerStub.count_call]
 
-        def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
+        def send_buy_order(self, traded_pair: str, amount_to_spend: float, price: float):
             pass
 
     dca_configuration = model.DcaConfiguration(price_initialisation=20, step_price=1,

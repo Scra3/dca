@@ -36,11 +36,11 @@ class KrakenApi:
             return self.get_current_pair_price(pair)
 
     @staticmethod
-    def _compute_volume_to_buy(amount_to_spent: float, price: float) -> float:
-        return amount_to_spent / price
+    def _compute_volume_to_buy(amount_to_spend: float, price: float) -> float:
+        return amount_to_spend / price
 
-    def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
-        volume = self._compute_volume_to_buy(amount_to_spent, price)
+    def send_buy_order(self, traded_pair: str, amount_to_spend: float, price: float):
+        volume = self._compute_volume_to_buy(amount_to_spend, price)
         try:
             self._kraken.load_key(KRAKEN_KEY_FILE)
             self._kraken.query_private("AddOrder", {'pair': traded_pair,
@@ -54,7 +54,7 @@ class KrakenApi:
             Log().warning("KRAKEN KEY is not defined, buy order is not send").save()
         except requests.HTTPError:
             message = f"[FAILED] Send buy order failed, "
-            f"trade_pair={traded_pair}, price={traded_pair}, amount_to_spent={traded_pair}"
+            f"trade_pair={traded_pair}, price={traded_pair}, amount_to_spend={traded_pair}"
             Log().error(message).save()
 
     def get_balance(self, traded_pair: str) -> float:

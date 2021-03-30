@@ -15,18 +15,18 @@ class DcaRunner:
         current_price = self._broker.get_current_pair_price(self._dca_configuration.traded_pair)
         prices = self._price_history.get_prices()
         total_spent = self._portfolio.get_total_spent()
-        amount_to_spent = self._dca.compute_amount_to_spend(current_price=current_price,
+        amount_to_spend = self._dca.compute_amount_to_spend(current_price=current_price,
                                                             prices_history=prices,
                                                             total_spent=total_spent)
         timestamp = time.time()
         self._price_history.save(price=current_price, timestamp=timestamp)
 
-        if amount_to_spent > 0:
-            self._broker.send_buy_order(price=current_price, amount_to_spent=amount_to_spent,
+        if amount_to_spend > 0:
+            self._broker.send_buy_order(price=current_price, amount_to_spend=amount_to_spend,
                                         traded_pair=self._dca_configuration.traded_pair)
-            model.Order().save(amount_to_spent, current_price, timestamp)
+            model.Order().save(amount_to_spend, current_price, timestamp)
             Log().success(
-                f"buy order is sent - amount_to_spent={amount_to_spent}, current_price={current_price}").save()
+                f"buy order is sent - amount_to_spend={amount_to_spend}, current_price={current_price}").save()
         else:
             Log().info(
-                f"buy order is not sent - amount_to_spent={amount_to_spent}, current_price={current_price}").save()
+                f"buy order is not sent - amount_to_spend={amount_to_spend}, current_price={current_price}").save()

@@ -72,14 +72,14 @@ def test_amount_to_spend__throws_error_when_price_initialisation_is_bigger_than_
                                          max_amount_to_spend=20)).compute_amount_to_spend(10, [])
 
 
-def test_amount_to_spend__returns_max_amount_to_spend_when_amount_to_spent_is_bigger():
+def test_amount_to_spend__returns_max_amount_to_spend_when_amount_to_spend_is_bigger():
     amount = model.Dca(
         model.DcaConfiguration(price_initialisation=20, step_price=1, max_amount_to_spend=20)).compute_amount_to_spend(
         7, [10, 12])
     assert amount == 20
 
 
-def test_amount_to_spend__max_amount_to_spent_must_not_exceeded_when_force_buy_is_set():
+def test_amount_to_spend__max_amount_to_spend_must_not_exceeded_when_force_buy_is_set():
     amount = model.Dca(model.DcaConfiguration(price_initialisation=20, step_price=1, max_amount_to_spend=20,
                                               max_total_amount_to_spend=20,
                                               force_buy_under_price=20)).compute_amount_to_spend(

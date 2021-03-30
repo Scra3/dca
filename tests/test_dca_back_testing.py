@@ -27,7 +27,7 @@ def test_dca_runner_with_real_btc_prices(drop_databases_after_test):
             BrokerStub.count_call = BrokerStub.count_call + 1
             return BrokerStub.prices[BrokerStub.count_call]
 
-        def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
+        def send_buy_order(self, traded_pair: str, amount_to_spend: float, price: float):
             pass
 
     dca_configuration = model.DcaConfiguration(price_initialisation=20, step_price=1,
@@ -58,7 +58,7 @@ def test_dca_runner_with_real_eth_prices(drop_databases_after_test):
             BrokerStub.count_call = BrokerStub.count_call + 1
             return BrokerStub.prices[BrokerStub.count_call]
 
-        def send_buy_order(self, traded_pair: str, amount_to_spent: float, price: float):
+        def send_buy_order(self, traded_pair: str, amount_to_spend: float, price: float):
             pass
 
     dca_configuration = model.DcaConfiguration(price_initialisation=20, step_price=1,

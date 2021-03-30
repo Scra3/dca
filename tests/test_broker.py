@@ -12,10 +12,10 @@ def test_get_current_ethereum_price():
 
 
 def test__compute_volume_to_buy():
-    price = model.Broker()._compute_volume_to_buy(amount_to_spent=10, price=5)
+    price = model.Broker()._compute_volume_to_buy(amount_to_spend=10, price=5)
     assert price == 2
 
 
 def test__compute_volume_to_buy_with_big_float():
-    price = model.Broker()._compute_volume_to_buy(amount_to_spent=4, price=34060.17)
+    price = model.Broker()._compute_volume_to_buy(amount_to_spend=4, price=34060.17)
     assert price == 0.00011743922593457403
