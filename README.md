@@ -80,6 +80,7 @@ Add a *kraken.key* file with the first line, and the second line the secret key.
     ```bash
     * * * * * cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
     * * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
+    * * * * * cd /home/pi/Documents/dca/ && make copy-data-to-front >> log.txt 2>&1
     ```
 
 ### Display front
@@ -89,6 +90,12 @@ Copy the backups files in *front > chart > data* and add json extension to the f
 
 ```bash
 make run-front
+```
+
+### Estimate configuration parameters
+
+```bash
+make projection
 ```
 
 ## faq 

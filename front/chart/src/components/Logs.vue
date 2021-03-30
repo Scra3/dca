@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import logsData from '../../data/log_pickle_db_test.json'
+  import logsData from '../../data/log.json'
 
   export default {
     name: 'Logs',
