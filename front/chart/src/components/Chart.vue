@@ -1,6 +1,7 @@
 <template>
     <div class="chart">
         <section class="overview">
+            <img class="bitcoin-image" src="../assets/bitcoin.png" />
             <h3>Total amount spent: {{ totalAmountSpent.toFixed(2) }}</h3>
             <h3>Average: {{ averagePrice.toFixed(2) }}</h3>
             <h3> Estimated balance: {{ balance.toFixed(2) }}</h3>
@@ -89,6 +90,10 @@
 </script>
 
 <style scoped>
+    .bitcoin-image {
+        width: 60px;
+    }
+
     .chart {
         display: flex;
         flex-direction: column;
@@ -106,7 +111,7 @@
     .overview {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-evenly;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
         padding: 10px;
         background-color: #222831;

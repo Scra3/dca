@@ -11,6 +11,10 @@
                 {{log.message}}
             </li>
         </ul>
+
+        <div v-if="filteredLogs.length === 0">
+            No log to display
+        </div>
     </div>
 </template>
 
