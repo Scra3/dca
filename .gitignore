@@ -7,3 +7,4 @@ __pycache__
 /dca_configuration_production.json
 /log.txt
 front/chart/data
+backup
