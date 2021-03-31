@@ -1,14 +1,16 @@
 <template>
     <div class="chart">
         <section class="overview">
-            <img class="bitcoin-image" src="../assets/bitcoin.png" />
+            <img class="bitcoin-image" src="../assets/bitcoin.png"/>
             <h3>Total amount spent: {{ totalAmountSpent.toFixed(2) }}</h3>
             <h3>Average: {{ averagePrice.toFixed(2) }}</h3>
             <h3> Estimated balance: {{ balance.toFixed(2) }}</h3>
         </section>
-        <section class="content">
-            <div id="chart"></div>
-        </section>
+        <Card>
+            <section class="tradingview-chart">
+                <div id="chart"></div>
+            </section>
+        </Card>
     </div>
 </template>
 
@@ -16,9 +18,11 @@
   import {createChart, LineStyle} from 'lightweight-charts';
   import prices from '../../data/price_history.json'
   import portfolio from '../../data/orders.json'
+  import Card from "./Card";
 
   export default {
     name: 'Chart',
+    components: {Card},
     mounted() {
       this.displayChart();
     },
@@ -90,31 +94,29 @@
 </script>
 
 <style scoped>
-    .bitcoin-image {
-        width: 60px;
-    }
-
     .chart {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
 
-    .content {
+    .tradingview-chart {
         display: flex;
         justify-content: center;
         flex-direction: column;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-        padding: 10px;
     }
 
     .overview {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-        padding: 10px;
         background-color: #222831;
         color: white;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .bitcoin-image {
+        width: 60px;
     }
 </style>

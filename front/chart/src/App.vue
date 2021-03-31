@@ -1,8 +1,12 @@
 <template>
     <div class="app">
         <div class="system-info">
-            <Configuration class="configuration"/>
-            <Logs class="logs"/>
+            <Card class="configuration">
+                <Configuration/>
+            </Card>
+            <Card class="logs">
+                <Logs/>
+            </Card>
         </div>
         <Chart/>
     </div>
@@ -12,10 +16,12 @@
   import Chart from './components/Chart.vue'
   import Logs from './components/Logs.vue'
   import Configuration from "./components/Configuration";
+  import Card from "./components/Card";
 
   export default {
     name: 'App',
     components: {
+      Card,
       Configuration,
       Chart,
       Logs

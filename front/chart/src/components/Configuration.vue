@@ -1,12 +1,14 @@
 <template>
     <div class="config">
         <h2>Configuration</h2>
-        <p>Price initialisation: {{ configurationData["price_initialisation"] }}</p>
-        <p>Traded pair: {{ configurationData["traded_pair"] }}</p>
-        <p>Step price: {{ configurationData["step_price"] }}</p>
-        <p>Force buy under price: {{ configurationData["force_buy_under_price"] }}</p>
-        <p>Max amount to spend: {{ configurationData["max_amount_to_spend"] }}</p>
-        <p>Max total amount to spend: {{ configurationData["max_total_amount_to_spend"] }}</p>
+        <section>
+            <p>Price initialisation: {{ configurationData["price_initialisation"] }}</p>
+            <p>Traded pair: {{ configurationData["traded_pair"] }}</p>
+            <p>Step price: {{ configurationData["step_price"] }}</p>
+            <p>Force buy under price: {{ configurationData["force_buy_under_price"] }}</p>
+            <p>Max amount to spend: {{ configurationData["max_amount_to_spend"] }}</p>
+            <p>Max total amount to spend: {{ configurationData["max_total_amount_to_spend"] }}</p>
+        </section>
     </div>
 </template>
 
@@ -36,9 +38,11 @@
     .config {
         display: flex;
         flex-direction: column;
+    }
+
+    section {
+        display: flex;
         justify-content: center;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-        padding: 10px;
-        background-color: #F6F6F6;
+        flex-direction: column;
     }
 </style>
