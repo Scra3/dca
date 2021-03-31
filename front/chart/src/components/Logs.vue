@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import logsData from '../../data/log.json'
+  import {getLogsData} from "../../api";
 
   export default {
     name: 'Logs',
@@ -36,9 +36,12 @@
       }
     },
     computed: {
+      logsData() {
+        return getLogsData();
+      },
       logs() {
-        return logsData.messages.map((message, index) => {
-          return {message: message, timestamp: logsData.timestamps[index], type: logsData.types[index]}
+        return this.logsData.messages.map((message, index) => {
+          return {message: message, timestamp: this.logsData.timestamps[index], type: this.logsData.types[index]}
         }).reverse()
       },
       filteredLogs() {

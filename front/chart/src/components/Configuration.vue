@@ -13,13 +13,13 @@
 </template>
 
 <script>
-  import configuration from '../../data/configuration.json'
+  import {getConfigurationData} from "../../api";
 
   export default {
     name: 'Configuration',
     computed: {
       configurationData() {
-        return configuration;
+        return getConfigurationData();
       }
     }
   }

@@ -16,9 +16,8 @@
 
 <script>
   import {createChart, LineStyle} from 'lightweight-charts';
-  import prices from '../../data/price_history.json'
-  import portfolio from '../../data/orders.json'
   import Card from "./Card";
+  import {getOrdersData, getPricesData} from "../../api";
 
   export default {
     name: 'Chart',
@@ -27,19 +26,25 @@
       this.displayChart();
     },
     computed: {
+      orders() {
+        return getOrdersData();
+      },
+      prices() {
+        return getPricesData();
+      },
       points() {
-        return prices["prices_history"].map((price, index) => {
-          return {time: prices["timestamps"][index], value: price};
+        return getPricesData()["prices_history"].map((price, index) => {
+          return {time: this.prices["timestamps"][index], value: price};
         });
       },
       totalAmountSpent() {
-        return portfolio["amounts_spent"].reduce((totalAmount, amount) => {
+        return getOrdersData()["amounts_spent"].reduce((totalAmount, amount) => {
           return totalAmount + amount
         }, 0);
       },
       balance() {
-        const amounts_spent = portfolio["amounts_spent"];
-        const portfolio_prices = portfolio["prices"];
+        const amounts_spent = this.orders["amounts_spent"];
+        const portfolio_prices = this.orders["prices"];
 
         return portfolio_prices.reduce((computedBalance, price, index) => {
           return computedBalance + (amounts_spent[index] / portfolio_prices[index])
@@ -54,14 +59,14 @@
         lineSeries.setData(this.points);
       },
       setMarkers(lineSeries) {
-        const data = portfolio["timestamps"].map((timestamp, index) => {
+        const data = this.orders["timestamps"].map((timestamp, index) => {
           return {
             time: timestamp,
             position: 'belowBar',
             size: 1,
             color: 'red',
             shape: 'arrowUp',
-            text: `${portfolio["amounts_spent"][index]}`,
+            text: `${this.orders["amounts_spent"][index]}`,
           }
         });
         lineSeries.setMarkers(data);
