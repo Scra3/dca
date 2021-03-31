@@ -1,7 +1,8 @@
 <template>
     <div class="logs">
         <h2>Logs</h2>
-        <label for="filter">Display only <span class="error">Error</span> and <span class="warning">Warning</span>errors</label>
+        <label for="filter">Display only <span class="error">Error</span> and <span class="warning">Warning</span>
+            errors</label>
         <input id="filter" type="checkbox" value="filtered" v-model="isFiltered"/>
         <section class="details">
             <ul>
