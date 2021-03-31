@@ -1,20 +1,20 @@
 <template>
     <div class="logs">
         <h2>Logs</h2>
-        <label for="filter">Display only <span class="error">Error</span> and <span class="warning">Warning</span>
-            errors</label>
+        <label for="filter">Display only <span class="error">Error</span> and <span class="warning">Warning</span>errors</label>
         <input id="filter" type="checkbox" value="filtered" v-model="isFiltered"/>
+        <section class="details">
+            <ul>
+                <li v-for="log in filteredLogs" :key="log.message" :class="log.type">
+                    <span class="date">{{ convertTimestampToDate(log.timestamp)}}</span> -
+                    {{log.message}}
+                </li>
+            </ul>
 
-        <ul>
-            <li v-for="log in filteredLogs" :key="log.message" :class="log.type">
-                <span class="date">{{ convertTimestampToDate(log.timestamp)}}</span> -
-                {{log.message}}
-            </li>
-        </ul>
-
-        <div v-if="filteredLogs.length === 0">
-            No log to display
-        </div>
+            <div v-if="filteredLogs.length === 0">
+                No log to display
+            </div>
+        </section>
     </div>
 </template>
 
@@ -43,26 +43,30 @@
       filteredLogs() {
         return this.logs.filter(log => {
           return this.isFiltered.length > 0 ? (log.type === "error" || log.type === "warning") : true
-        })
+        });
       }
     }
   }
 </script>
 
 <style scoped>
+    .logs {
+        word-wrap: break-word;
+        background-color: #F6F6F6;
+        padding: 10px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+        overflow-y: hidden;
+        height: 100%;
+    }
+
     h2 {
         display: flex;
         justify-content: center;
     }
 
-    .logs {
-        width: 30em;
-        word-wrap: break-word;
-        padding: 10px;
+    .details {
         overflow-y: scroll;
-        background-color: #F6F6F6;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
-        height: 900px;
+        height: 100%;
     }
 
     li {
