@@ -35,7 +35,7 @@ copy-data-to-front: ## copy data to display in front
 	rm -rf ./front/chart/data
 	mkdir ./front/chart/data
 	cp db/* ./front/chart/data/
-	cp dca_configuration_production.json ./front/chart/data/configuration.json
+	cp dca_configuration_*.json ./front/chart/data/configuration.json
 	mv ./front/chart/data/log* ./front/chart/data/log.json
 	mv ./front/chart/data/orders* ./front/chart/data/orders.json
 	mv ./front/chart/data/price_history* ./front/chart/data/price_history.json
