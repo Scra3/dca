@@ -92,7 +92,7 @@ Copy the backups files in *front > chart > data* and add json extension to the f
 make run-front
 ```
 
-### Estimate configuration parameters
+### Estimate configuration parameters
 
 ```bash
 make projection
