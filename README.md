@@ -6,7 +6,7 @@ For example :
 
 The first buy will cost **10$**. The second will cost **11$**. The goal to increment the amount to invest is to attrack the price down to the bottom.
 
-It buy only the lower price, if the price increases, we will count each candle between the last last low and the new low and we make the sum of it.
+It buy only the lower price, if the price increases, we will count each candle between the last low and the new low and we make the sum of it.
 
 For example, if at each candle it increments to **1$** and it starts to **10$** :
 
