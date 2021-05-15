@@ -8,8 +8,5 @@ class PriceHistory(mapper.PriceHistoryMapper):
         self._price: typing.Optional[float] = price
         self._timestamp: typing.Optional[float] = timestamp
 
-    def save(self, price: float = None, timestamp: float = None):
-        if price is None:
-            price = self._price
-
-        self._timestamp = self._save(price, timestamp)
+    def save(self):
+        self._timestamp = self._save(self._price, self._timestamp)

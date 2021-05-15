@@ -37,9 +37,9 @@ def test_dca_runner_with_real_btc_prices(drop_databases_after_test):
         dca_runner.run()
 
     prices = model.PriceHistory().get_prices()
-    total_spent = model.Portfolio().get_total_spent()
-    balance = model.Portfolio().get_balance()
-    average = model.Portfolio().get_average_price()
+    total_spent = model.Portfolio.get_total_spent()
+    balance = model.Portfolio.get_balance()
+    average = model.Portfolio.get_average_price()
 
     assert len(prices) == len(broker.prices)
     assert total_spent == 2585
@@ -67,9 +67,9 @@ def test_dca_runner_with_real_eth_prices(drop_databases_after_test):
         dca_runner.run()
 
     prices = model.PriceHistory().get_prices()
-    total_spent = model.Portfolio().get_total_spent()
-    balance = model.Portfolio().get_balance()
-    average = model.Portfolio().get_average_price()
+    total_spent = model.Portfolio.get_total_spent()
+    balance = model.Portfolio.get_balance()
+    average = model.Portfolio.get_average_price()
 
     assert len(prices) == len(broker.prices)
     assert balance == 12.559736986288318
