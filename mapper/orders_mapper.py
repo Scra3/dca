@@ -1,26 +1,16 @@
 import pickledb
 import mapper.mapper as mapper
-import os
 import typing
 
-PORTFOLIO_DB = "db/orders_pickle_db"
-PORTFOLIO_DB_TEST = "db/orders_pickle_db_test.json"
+DB = "db/orders_pickle_db"
+DB_TEST = "db/orders_pickle_db_test.json"
 AMOUNTS_SPENT_KEY = "amounts_spent"
 BUYING_PRICES_KEY = "prices"
 
 
 class OrdersMapper(mapper.Mapper):
     def __init__(self):
-        super().__init__()
-        self._db_location = self._get_db_location(db_test=PORTFOLIO_DB_TEST, db_production=PORTFOLIO_DB)
-        self._db = self._load_db()
-
-    def drop_db(self):
-        if os.path.exists(self._db_location):
-            os.remove(self._db_location)
-
-    def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
-        return pickledb.load(self._db_location, dump)
+        super().__init__(db_test=DB_TEST, db=DB)
 
     def _save(self, amount: float, price: float, timestamp: float):
         if not self._db.get(AMOUNTS_SPENT_KEY):
