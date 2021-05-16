@@ -24,12 +24,12 @@ class Mapper(abc.ABC):
             return db
         return db_test
 
-    def _save_timestamp(self, timestamp: float = time.time()):
+    def _save_timestamp(self, timestamp: float = time.time()) -> float:
         if not self._db.get(TIMESTAMPS_KEY):
             self._db.lcreate(TIMESTAMPS_KEY)
 
         self._db.ladd(TIMESTAMPS_KEY, timestamp)
-        return time
+        return timestamp
 
     def drop_db(self):
         if os.path.exists(self._db_location):

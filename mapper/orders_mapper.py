@@ -22,13 +22,13 @@ class OrdersMapper(mapper.Mapper):
         self._db.ladd(BUYING_PRICES_KEY, price)
         return self._save_timestamp(timestamp)
 
-    def get_buying_prices(self) -> typing.List[float]:
+    def get_prices(self) -> typing.List[float]:
         if not self._db.get(BUYING_PRICES_KEY):
             return []
 
         return self._db.lgetall(BUYING_PRICES_KEY)
 
-    def get_amounts_spent(self) -> typing.List[float]:
+    def get_volumes(self) -> typing.List[float]:
         if not self._db.get(AMOUNTS_SPENT_KEY):
             return []
 

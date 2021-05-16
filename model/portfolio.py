@@ -13,13 +13,13 @@ class Portfolio:
     @staticmethod
     def get_balance() -> float:
         balance = 0
-        amounts_spent = model.Order().get_amounts_spent()
-        prices = model.Order().get_buying_prices()
+        volumes = model.Order().get_volumes()
+        prices = model.Order().get_prices()
         for index, _ in enumerate(prices):
-            balance += amounts_spent[index] / prices[index]
+            balance += volumes[index] / prices[index]
 
         return balance
 
     @staticmethod
     def get_total_spent() -> float:
-        return sum(model.Order().get_amounts_spent())
+        return sum(model.Order().get_volumes())

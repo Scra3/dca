@@ -51,15 +51,15 @@ def test_dca_runner_4_times(drop_databases_after_test):
 
     dca_runner.run()
     prices = model.PriceHistory().get_prices()
-    amounts_spent = model.Order().get_amounts_spent()
+    volumes = model.Order().get_volumes()
 
-    assert amounts_spent == [20]
+    assert volumes == [20]
     assert prices == [200]
 
     dca_runner.run()
 
     prices = model.PriceHistory().get_prices()
-    total_spent = model.Order().get_amounts_spent()
+    total_spent = model.Order().get_volumes()
 
     assert total_spent == [20]
     assert prices == [200, 300]
@@ -67,7 +67,7 @@ def test_dca_runner_4_times(drop_databases_after_test):
     dca_runner.run()
 
     prices = model.PriceHistory().get_prices()
-    total_spent = model.Order().get_amounts_spent()
+    total_spent = model.Order().get_volumes()
 
     assert total_spent == [20]
     assert prices == [200, 300, 250]
@@ -75,7 +75,7 @@ def test_dca_runner_4_times(drop_databases_after_test):
     dca_runner.run()
 
     prices = model.PriceHistory().get_prices()
-    total_spent = model.Order().get_amounts_spent()
+    total_spent = model.Order().get_volumes()
 
     assert total_spent == [20, 21 + 22 + 23]
     assert prices == [200, 300, 250, 150]
