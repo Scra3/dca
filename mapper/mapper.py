@@ -20,7 +20,6 @@ class Mapper(abc.ABC):
         env = os.getenv(constants.ENV, constants.TEST_ENV)
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
-
         if env == constants.TEST_ENV:
             return f"{dir_path}/../{db_test}"
 

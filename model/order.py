@@ -1,13 +1,20 @@
 import mapper
-import typing
+import enum
+
+
+class OrderType(enum.Enum):
+    BUY = "buy"
+    SELL = "sell"
 
 
 class Order(mapper.OrdersMapper):
-    def __init__(self, amount: float = None, price: float = None, timestamp: float = None):
-        super().__init__()
-        self._amount: typing.Optional[float] = amount
-        self._price: typing.Optional[float] = price
-        self._timestamp: typing.Optional[float] = timestamp
-
-    def save(self):
-        self._timestamp = self._save(self._amount, self._price, self._timestamp)
+    def __init__(
+        self,
+        amount: float = None,
+        price: float = None,
+        timestamp: float = None,
+        order_type: OrderType = None,
+    ):
+        super().__init__(
+            amount, price, timestamp, None if order_type is None else order_type.value
+        )

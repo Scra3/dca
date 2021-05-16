@@ -3,11 +3,13 @@ import typing
 
 
 class Log(mapper.LogMapper):
-    def __init__(self):
-        super().__init__()
-        self._log_type: typing.Optional[str] = None
-        self._message: typing.Optional[str] = None
-        self._timestamp: typing.Optional[float] = None
+    def __init__(
+        self,
+        log_type: typing.Optional[str] = None,
+        message: typing.Optional[str] = None,
+        timestamp: typing.Optional[float] = None,
+    ):
+        super().__init__(log_type, message, timestamp)
 
     def error(self, message: str) -> "Log":
         self._log_type = "error"
@@ -35,7 +37,3 @@ class Log(mapper.LogMapper):
 
     def _print(self):
         print(f"{self._log_type} - {self._message}")
-
-    def save(self) -> "Log":
-        self._timestamp = self._save_log(self._log_type, self._message)
-        return self

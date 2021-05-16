@@ -3,7 +3,7 @@ from fixtures import drop_databases
 
 
 def test_get_average_price(drop_databases):
-    model.Order(amount=10, price=10).save()
+    model.Order(amount=10, price=10, order_type=model.OrderType.BUY).save()
 
     price = model.Portfolio.get_average_price()
 
@@ -11,8 +11,8 @@ def test_get_average_price(drop_databases):
 
 
 def test_get_balance(drop_databases):
-    model.Order(amount=1, price=10).save()
-    model.Order(amount=1, price=10).save()
+    model.Order(amount=1, price=10, order_type=model.OrderType.BUY).save()
+    model.Order(amount=1, price=10, order_type=model.OrderType.BUY).save()
 
     balance = model.Portfolio.get_balance()
 
