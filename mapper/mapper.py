@@ -9,12 +9,6 @@ TIMESTAMPS_KEY = "timestamps"
 
 
 class Mapper(abc.ABC):
-    def __init__(self, db_test, db):
-        self._db_location: typing.Optional[str] = self._get_db_location(
-            db_test=db_test, db=db
-        )
-        self._db: typing.Optional[pickledb.PickleDB] = self._load_db()
-
     @staticmethod
     def _get_db_location(db_test: str, db: str) -> str:
         env = os.getenv(constants.ENV, constants.TEST_ENV)
@@ -28,16 +22,19 @@ class Mapper(abc.ABC):
 
         return db_test
 
-    def _save_timestamp(self, timestamp: float = time.time()) -> float:
-        if not self._db.get(TIMESTAMPS_KEY):
-            self._db.lcreate(TIMESTAMPS_KEY)
+    @staticmethod
+    def _save_timestamp(db: pickledb.PickleDB, timestamp: float = time.time()) -> float:
+        if not db.get(TIMESTAMPS_KEY):
+            db.lcreate(TIMESTAMPS_KEY)
 
-        self._db.ladd(TIMESTAMPS_KEY, timestamp)
+        db.ladd(TIMESTAMPS_KEY, timestamp)
         return timestamp
 
-    def drop_db(self):
-        if os.path.exists(self._db_location):
-            os.remove(self._db_location)
+    @staticmethod
+    def _drop_db(location: str):
+        if os.path.exists(location):
+            os.remove(location)
 
-    def _load_db(self, dump: bool = True) -> pickledb.PickleDB:
-        return pickledb.load(self._db_location, dump)
+    @staticmethod
+    def load_db(db_test: str, db: str, dump: bool = True) -> pickledb.PickleDB:
+        return pickledb.load(Mapper._get_db_location(db_test=db_test, db=db), dump)

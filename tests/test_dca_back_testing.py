@@ -1,3 +1,4 @@
+import api
 import dca_runner as runner
 import model
 import stub
@@ -23,7 +24,7 @@ def test_dca_runner_with_real_btc_prices(drop_databases):
         price_initialisation=20,
         step_price=1,
         force_buy_under_price=3600,
-        traded_pair="XBTEUR",
+        traded_pair=model.PairMapping.XBTUSDC,
     )
     broker = stub.BrokerStub()
     broker.prices = get_only_tuesday_prices(data.btc_prices)
@@ -36,7 +37,7 @@ def test_dca_runner_with_real_btc_prices(drop_databases):
     for _ in range(len(broker.prices)):
         dca_runner.run()
 
-    prices = model.PriceHistory().get_prices()
+    prices = model.PriceHistory.get_prices()
     total_spent = model.Portfolio.get_total_spent()
     balance = model.Portfolio.get_balance()
     average = model.Portfolio.get_average_price()
@@ -51,7 +52,7 @@ def test_dca_runner_with_real_eth_prices(drop_databases):
     dca_configuration = model.DcaConfiguration(
         price_initialisation=20,
         step_price=1,
-        traded_pair="XBTEUR",
+        traded_pair=model.PairMapping.XBTUSDC,
         force_buy_under_price=150,
         max_total_amount_to_spend=2000,
     )
@@ -66,7 +67,7 @@ def test_dca_runner_with_real_eth_prices(drop_databases):
     for _ in range(len(broker.prices)):
         dca_runner.run()
 
-    prices = model.PriceHistory().get_prices()
+    prices = model.PriceHistory.get_prices()
     total_spent = model.Portfolio.get_total_spent()
     balance = model.Portfolio.get_balance()
     average = model.Portfolio.get_average_price()

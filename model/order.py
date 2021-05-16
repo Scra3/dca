@@ -1,5 +1,6 @@
 import mapper
 import enum
+import typing
 
 
 class OrderType(enum.Enum):
@@ -10,11 +11,11 @@ class OrderType(enum.Enum):
 class Order(mapper.OrdersMapper):
     def __init__(
         self,
-        amount: float = None,
-        price: float = None,
-        timestamp: float = None,
-        order_type: OrderType = None,
+        amount: float,
+        price: float,
+        order_type: OrderType,
+        timestamp: typing.Optional[float] = None,
     ):
         super().__init__(
-            amount, price, timestamp, None if order_type is None else order_type.value
+            amount, price, order_type.value, timestamp
         )

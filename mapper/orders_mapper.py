@@ -10,43 +10,62 @@ TYPE_KEY = "type"
 
 class OrdersMapper(mapper.Mapper):
     def __init__(
-        self, amount: float, price: float, timestamp: float, order_type: str
+        self,
+        amount: float,
+        price: float,
+        order_type: str,
+        timestamp: typing.Optional[float],
     ):
-        super().__init__(db_test=DB_TEST, db=DB)
-        self._amount: typing.Optional[float] = amount
-        self._price: typing.Optional[float] = price
+        self._amount: float = amount
+        self._price: float = price
         self._timestamp: typing.Optional[float] = timestamp
-        self._type: typing.Optional[str] = order_type
+        self._type: str = order_type
 
     def save(self) -> float:
-        if not self._db.get(AMOUNTS_SPENT_KEY):
-            self._db.lcreate(AMOUNTS_SPENT_KEY)
-        if not self._db.get(BUYING_PRICES_KEY):
-            self._db.lcreate(BUYING_PRICES_KEY)
-        if not self._db.get(TYPE_KEY):
-            self._db.lcreate(TYPE_KEY)
+        db = mapper.Mapper.load_db(db_test=DB_TEST, db=DB)
 
-        self._db.ladd(AMOUNTS_SPENT_KEY, self._amount)
-        self._db.ladd(BUYING_PRICES_KEY, self._price)
-        self._db.ladd(TYPE_KEY, self._type)
+        if not db.get(AMOUNTS_SPENT_KEY):
+            db.lcreate(AMOUNTS_SPENT_KEY)
+        if not db.get(BUYING_PRICES_KEY):
+            db.lcreate(BUYING_PRICES_KEY)
+        if not db.get(TYPE_KEY):
+            db.lcreate(TYPE_KEY)
 
-        self._timestamp = self._save_timestamp(self._timestamp)
+        db.ladd(AMOUNTS_SPENT_KEY, self._amount)
+        db.ladd(BUYING_PRICES_KEY, self._price)
+        db.ladd(TYPE_KEY, self._type)
+
+        self._timestamp = self._save_timestamp(db, self._timestamp)
         return self._timestamp
 
-    def get_prices(self) -> typing.List[float]:
-        if not self._db.get(BUYING_PRICES_KEY):
+    @staticmethod
+    def get_prices() -> typing.List[float]:
+        db = mapper.Mapper.load_db(db_test=DB_TEST, db=DB)
+
+        if not db.get(BUYING_PRICES_KEY):
             return []
 
-        return self._db.lgetall(BUYING_PRICES_KEY)
+        return db.lgetall(BUYING_PRICES_KEY)
 
-    def get_volumes(self) -> typing.List[float]:
-        if not self._db.get(AMOUNTS_SPENT_KEY):
+    @staticmethod
+    def get_volumes() -> typing.List[float]:
+        db = mapper.Mapper.load_db(db_test=DB_TEST, db=DB)
+
+        if not db.get(AMOUNTS_SPENT_KEY):
             return []
 
-        return self._db.lgetall(AMOUNTS_SPENT_KEY)
+        return db.lgetall(AMOUNTS_SPENT_KEY)
 
-    def get_orders_type(self) -> typing.List[str]:
-        if not self._db.get(TYPE_KEY):
+    @staticmethod
+    def get_orders_type() -> typing.List[str]:
+        db = mapper.Mapper.load_db(db_test=DB_TEST, db=DB)
+
+        if not db.get(TYPE_KEY):
             return []
 
-        return self._db.lgetall(TYPE_KEY)
+        return db.lgetall(TYPE_KEY)
+
+    @staticmethod
+    def drop_db():
+        location = mapper.Mapper._get_db_location(db_test=DB_TEST, db=DB)
+        mapper.Mapper._drop_db(location)

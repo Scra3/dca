@@ -6,3 +6,5 @@ from .broker import Broker
 from .log import Log
 from .order import Order
 from .order import OrderType
+from .enum import PairMapping
+from .enum import AssetMapping

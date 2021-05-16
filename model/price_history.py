@@ -5,7 +5,7 @@ import typing
 class PriceHistory(mapper.PriceHistoryMapper):
     def __init__(
         self,
-        price: typing.Optional[float] = None,
+        price: float,
         timestamp: typing.Optional[float] = None,
     ):
         super().__init__(price, timestamp)

@@ -12,10 +12,10 @@ def job():
                                   dca_configuration=dca_configuration)
     dca_runner.run()
     print(f"balance: {model.Portfolio.get_balance()}")
-    print(f"amounts spent: {model.Order().get_volumes()}")
+    print(f"amounts spent: {model.Order.get_volumes()}")
     print(f"total: {model.Portfolio.get_total_spent()}")
     print(f"average: {model.Portfolio.get_average_price()}")
-    print(f"prices: {model.price_history.PriceHistory().get_prices()}")
+    print(f"prices: {model.price_history.PriceHistory.get_prices()}")
 
     print(f"Broker balance: {model.Broker.get_balance(dca_configuration.traded_pair)}")
 

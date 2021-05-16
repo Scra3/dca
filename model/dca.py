@@ -1,6 +1,8 @@
 import typing
 import json
 
+from model.enum import PairMapping
+
 import api
 
 
@@ -9,14 +11,14 @@ class DcaConfiguration:
         self,
         price_initialisation: float,
         step_price: float,
-        traded_pair: api.PairMapping,
+        traded_pair: PairMapping,
         force_buy_under_price: typing.Optional[float] = None,
         max_amount_to_spend: typing.Optional[float] = None,
         max_total_amount_to_spend: typing.Optional[float] = None,
     ):
         self.price_initialisation = price_initialisation
         self.step_price = step_price
-        self.traded_pair: api.PairMapping = traded_pair
+        self.traded_pair: PairMapping = traded_pair
         self.force_buy_under_price = force_buy_under_price
         self.max_amount_to_spend = max_amount_to_spend
         self.max_total_amount_to_spend = max_total_amount_to_spend
@@ -61,7 +63,7 @@ class DcaConfiguration:
         return DcaConfiguration(
             price_initialisation=dct.get("price_initialisation"),
             step_price=dct.get("step_price"),
-            traded_pair=api.PairMapping[dct.get("traded_pair")],
+            traded_pair=PairMapping[dct.get("traded_pair")],
             force_buy_under_price=dct.get("force_buy_under_price"),
             max_amount_to_spend=dct.get("max_amount_to_spend"),
             max_total_amount_to_spend=dct.get("max_total_amount_to_spend"),

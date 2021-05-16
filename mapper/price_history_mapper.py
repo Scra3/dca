@@ -7,22 +7,29 @@ PRICES_HISTORY_KEY = "prices_history"
 
 
 class PriceHistoryMapper(mapper.Mapper):
-    def __init__(
-        self, price: typing.Optional[float], timestamp: typing.Optional[float]
-    ):
-        super().__init__(db_test=DB_TEST, db=DB)
-        self._price: typing.Optional[float] = price
+    def __init__(self, price: float, timestamp: typing.Optional[float]):
+        self._price: float = price
         self._timestamp: typing.Optional[float] = timestamp
 
     def save(self):
-        if not self._db.get(PRICES_HISTORY_KEY):
-            self._db.lcreate(PRICES_HISTORY_KEY)
+        db = mapper.Mapper.load_db(db_test=DB_TEST, db=DB)
 
-        self._db.ladd(PRICES_HISTORY_KEY, self._price)
-        return self._save_timestamp(self._timestamp)
+        if not db.get(PRICES_HISTORY_KEY):
+            db.lcreate(PRICES_HISTORY_KEY)
 
-    def get_prices(self) -> typing.List[float]:
-        if not self._db.get(PRICES_HISTORY_KEY):
+        db.ladd(PRICES_HISTORY_KEY, self._price)
+        return self._save_timestamp(db, self._timestamp)
+
+    @staticmethod
+    def get_prices() -> typing.List[float]:
+        db = mapper.Mapper.load_db(db_test=DB_TEST, db=DB)
+
+        if not db.get(PRICES_HISTORY_KEY):
             return []
 
-        return self._db.lgetall(PRICES_HISTORY_KEY)
+        return db.lgetall(PRICES_HISTORY_KEY)
+
+    @staticmethod
+    def drop_db():
+        location = mapper.Mapper._get_db_location(db_test=DB_TEST, db=DB)
+        mapper.Mapper._drop_db(location)

@@ -5,35 +5,35 @@ import typing
 class Log(mapper.LogMapper):
     def __init__(
         self,
-        log_type: typing.Optional[str] = None,
-        message: typing.Optional[str] = None,
+        log_type: str,
+        message: str,
         timestamp: typing.Optional[float] = None,
     ):
         super().__init__(log_type, message, timestamp)
 
-    def error(self, message: str) -> "Log":
-        self._log_type = "error"
-        self._message = message
-        self._print()
-        return self
+    @staticmethod
+    def error(message: str) -> "Log":
+        log = Log("error", message)
+        log._print()
+        return log
 
-    def warning(self, message: str) -> "Log":
-        self._log_type = "warning"
-        self._message = message
-        self._print()
-        return self
+    @staticmethod
+    def warning(message: str) -> "Log":
+        log = Log("warning", message)
+        log._print()
+        return log
 
-    def success(self, message: str) -> "Log":
-        self._log_type = "success"
-        self._message = message
-        self._print()
-        return self
+    @staticmethod
+    def success(message: str) -> "Log":
+        log = Log("success", message)
+        log._print()
+        return log
 
-    def info(self, message: str) -> "Log":
-        self._log_type = "info"
-        self._message = message
-        self._print()
-        return self
+    @staticmethod
+    def info(message: str) -> "Log":
+        log = Log("info", message)
+        log._print()
+        return log
 
     def _print(self):
         print(f"{self._log_type} - {self._message}")
