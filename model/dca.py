@@ -22,38 +22,42 @@ class DcaConfiguration:
         self.max_total_amount_to_spend = max_total_amount_to_spend
 
     @classmethod
-    def serialise(cls, json_as_str: str):
+    def serialise(cls, json_as_str: str) -> "DcaConfiguration":
         return json.loads(
             json_as_str, object_hook=DcaConfiguration.as_dca_configuration
         )
 
-    @staticmethod
-    def sanitize(dct):
-        step_price: float = dct.get("step_price")
-        price_initialisation: float = dct.get("price_initialisation")
-        force_buy_under_price: float = dct.get("force_buy_under_price")
-        max_amount_to_spend: float = dct.get("max_amount_to_spend")
-        max_total_amount_to_spend: float = dct.get("max_total_amount_to_spend")
-
-        for attribute, name in [
-            (step_price, "step_price"),
-            (price_initialisation, "price_initialisation"),
-            (force_buy_under_price, "force_buy_under_price"),
-            (max_amount_to_spend, "max_amount_to_spend"),
-            (max_total_amount_to_spend, "max_total_amount_to_spend"),
+    def sanitize(self) -> "DcaConfiguration":
+        for value, name in [
+            (self.step_price, "step_price"),
+            (self.price_initialisation, "price_initialisation"),
+            (self.force_buy_under_price, "force_buy_under_price"),
+            (self.max_amount_to_spend, "max_amount_to_spend"),
+            (self.max_total_amount_to_spend, "max_total_amount_to_spend"),
         ]:
-            if attribute is None or attribute < 0:
-                raise Exception(f"{name} must be bigger or equal than 0")
+            if value is not None and value < 0:
+                raise Exception(f"{name} : {value} must be bigger or equal than 0")
 
-        try:
-            api.PairMapping[dct.get("traded_pair")]
-        except Exception:
-            raise Exception(f"{dct.get('traded_pair')} pair does not exist")
+        if (
+            self.max_amount_to_spend is not None
+            and self.price_initialisation > self.max_amount_to_spend
+        ):
+            raise Exception(
+                "price_initialisation must be lesser or equal than max_amount_to_spend"
+            )
+
+        if (
+            self.max_total_amount_to_spend is not None
+            and self.price_initialisation > self.max_total_amount_to_spend
+        ):
+            raise Exception(
+                "price_initialisation must be lesser or equal than max_total_amount_to_spend"
+            )
+
+        return self
 
     @staticmethod
-    def as_dca_configuration(dct):
-        DcaConfiguration.sanitize(dct)
-
+    def as_dca_configuration(dct) -> "DcaConfiguration":
         return DcaConfiguration(
             price_initialisation=dct.get("price_initialisation"),
             step_price=dct.get("step_price"),
@@ -61,29 +65,13 @@ class DcaConfiguration:
             force_buy_under_price=dct.get("force_buy_under_price"),
             max_amount_to_spend=dct.get("max_amount_to_spend"),
             max_total_amount_to_spend=dct.get("max_total_amount_to_spend"),
-        )
+        ).sanitize()
 
 
 class Dca:
     def __init__(self, config: DcaConfiguration):
+        config.sanitize()
         self._config = config
-
-        if (
-            self._config.max_amount_to_spend is not None
-            and self._config.price_initialisation > self._config.max_amount_to_spend
-        ):
-            raise Exception(
-                "price_initialisation must be bigger or equal than max_amount_to_spend"
-            )
-
-        if (
-            self._config.max_total_amount_to_spend is not None
-            and self._config.price_initialisation
-            > self._config.max_total_amount_to_spend
-        ):
-            raise Exception(
-                "price_initialisation must be bigger or equal than max_total_amount_to_spend"
-            )
 
     def compute_amount_to_spend(
         self,

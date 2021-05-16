@@ -189,3 +189,25 @@ def test_dca_configuration_serialise_raise_error_when_trader_pair_does_not_exist
 
     with pytest.raises(Exception):
         model.DcaConfiguration.serialise(json)
+
+
+def test_dca_configuration_serialise_raise_error_when_price_initialisation_is_lesser_than_max_amount_to_spend():
+    json = (
+        '{"price_initialisation": 100, "step_price": 1, '
+        '"force_buy_under_price": 20, "max_amount_to_spend": 10,'
+        ' "max_total_amount_to_spend": 100, "traded_pair": "ETHEUR"}'
+    )
+
+    with pytest.raises(Exception):
+        model.DcaConfiguration.serialise(json)
+
+
+def test_dca_configuration_serialise_raise_error_when_price_initialisation_is_lesser_than_total_max_amount_to_spend():
+    json = (
+        '{"price_initialisation": 100, "step_price": 1, '
+        '"force_buy_under_price": 20, "max_amount_to_spend": 100,'
+        ' "max_total_amount_to_spend": 10, "traded_pair": "ETHEUR"}'
+    )
+
+    with pytest.raises(Exception):
+        model.DcaConfiguration.serialise(json)
