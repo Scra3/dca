@@ -180,7 +180,7 @@ def test_dca_configuration_serialise_raise_error_when_a_value_is_negative():
         model.DcaConfiguration.serialise(json)
 
 
-def test_dca_configuration_serialise_raise_error_when_trader_pair_doest_not_exist():
+def test_dca_configuration_serialise_raise_error_when_trader_pair_does_not_exist():
     json = (
         '{"price_initialisation": 10, "step_price": 1, '
         '"force_buy_under_price": 20, "max_amount_to_spend": 10,'
