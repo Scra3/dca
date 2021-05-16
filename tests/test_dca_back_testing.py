@@ -4,7 +4,7 @@ import stub
 import data
 import typing
 import datetime as dt
-from fixtures import drop_databases_after_test
+from fixtures import drop_databases
 
 
 def get_only_tuesday_prices(prices: typing.List[float]) -> typing.List[float]:
@@ -18,7 +18,7 @@ def get_only_tuesday_prices(prices: typing.List[float]) -> typing.List[float]:
     return filtered_prices
 
 
-def test_dca_runner_with_real_btc_prices(drop_databases_after_test):
+def test_dca_runner_with_real_btc_prices(drop_databases):
     dca_configuration = model.DcaConfiguration(
         price_initialisation=20,
         step_price=1,
@@ -47,7 +47,7 @@ def test_dca_runner_with_real_btc_prices(drop_databases_after_test):
     assert average == 3769.7762363972474
 
 
-def test_dca_runner_with_real_eth_prices(drop_databases_after_test):
+def test_dca_runner_with_real_eth_prices(drop_databases):
     dca_configuration = model.DcaConfiguration(
         price_initialisation=20,
         step_price=1,

@@ -20,8 +20,10 @@ class Mapper(abc.ABC):
         env = os.getenv(constants.ENV, constants.TEST_ENV)
         if env == constants.TEST_ENV:
             return db_test
-        elif env == constants.PRODUCTION_ENV:
+
+        if env == constants.PRODUCTION_ENV:
             return db
+
         return db_test
 
     def _save_timestamp(self, timestamp: float = time.time()) -> float:

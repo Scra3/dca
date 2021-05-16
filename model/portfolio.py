@@ -14,7 +14,6 @@ class Portfolio:
     def get_balance() -> float:
         volumes = model.Order().get_volumes()
         prices = model.Order().get_prices()
-
         return sum([volumes[index] / prices[index] for index, _ in enumerate(prices)])
 
     @staticmethod
