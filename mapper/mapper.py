@@ -4,7 +4,6 @@ import pickledb
 import typing
 import abc
 import time
-import pathlib
 
 TIMESTAMPS_KEY = "timestamps"
 
