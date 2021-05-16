@@ -28,30 +28,39 @@ class DcaConfiguration:
         )
 
     @staticmethod
-    def as_dca_configuration(dct):
+    def sanitize(dct):
         step_price: float = dct.get("step_price")
         price_initialisation: float = dct.get("price_initialisation")
         force_buy_under_price: float = dct.get("force_buy_under_price")
         max_amount_to_spend: float = dct.get("max_amount_to_spend")
         max_total_amount_to_spend: float = dct.get("max_total_amount_to_spend")
 
-        for attribute in [
-            step_price,
-            price_initialisation,
-            force_buy_under_price,
-            max_amount_to_spend,
-            max_total_amount_to_spend,
+        for attribute, name in [
+            (step_price, "step_price"),
+            (price_initialisation, "price_initialisation"),
+            (force_buy_under_price, "force_buy_under_price"),
+            (max_amount_to_spend, "max_amount_to_spend"),
+            (max_total_amount_to_spend, "max_total_amount_to_spend"),
         ]:
             if attribute is None or attribute < 0:
-                raise Exception("attribute must be bigger or equal than 0")
+                raise Exception(f"{name} must be bigger or equal than 0")
+
+        try:
+            api.PairMapping[dct.get("traded_pair")]
+        except Exception:
+            raise Exception(f"{dct.get('traded_pair')} pair does not exist")
+
+    @staticmethod
+    def as_dca_configuration(dct):
+        DcaConfiguration.sanitize(dct)
 
         return DcaConfiguration(
-            price_initialisation=price_initialisation,
-            step_price=step_price,
+            price_initialisation=dct.get("price_initialisation"),
+            step_price=dct.get("step_price"),
             traded_pair=api.PairMapping[dct.get("traded_pair")],
-            force_buy_under_price=force_buy_under_price,
-            max_amount_to_spend=max_amount_to_spend,
-            max_total_amount_to_spend=max_total_amount_to_spend,
+            force_buy_under_price=dct.get("force_buy_under_price"),
+            max_amount_to_spend=dct.get("max_amount_to_spend"),
+            max_total_amount_to_spend=dct.get("max_total_amount_to_spend"),
         )
 
 
