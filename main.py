@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import dca_runner as runner
 import constants
+import dca_runner as runner
 import model
 
 

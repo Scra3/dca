@@ -1,4 +1,5 @@
 import typing
+
 import mapper.mapper as mapper
 
 DB = "db/price_history_pickle_db"

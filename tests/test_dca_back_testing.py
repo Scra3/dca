@@ -1,10 +1,12 @@
+import datetime as dt
+import typing
+
+import data
+import stub
+from fixtures import drop_databases
+
 import dca_runner as runner
 import model
-import stub
-import data
-import typing
-import datetime as dt
-from fixtures import drop_databases
 
 
 def get_only_tuesday_prices(prices: typing.List[float]) -> typing.List[float]:

@@ -1,2 +1,1 @@
-from .prices import btc_prices
-from .prices import eth_prices
+from .prices import btc_prices, eth_prices

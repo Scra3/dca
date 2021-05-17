@@ -1,9 +1,8 @@
-import typing
 import json
-
-from model.enum import PairMapping
+import typing
 
 import api
+from model.enum import PairMapping
 
 
 class DcaConfiguration:

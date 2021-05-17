@@ -1,4 +1,5 @@
 import time
+
 import model
 from model.log import Log
 

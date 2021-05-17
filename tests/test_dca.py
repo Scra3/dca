@@ -1,6 +1,7 @@
-import model
 import pytest
+
 import api
+import model
 
 
 def test_amount_to_spend__returns_initialise_price_when_there_is_only_one_price():

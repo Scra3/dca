@@ -1,5 +1,4 @@
 import model
-import api
 
 
 def test_get_current_bitcoin_price():

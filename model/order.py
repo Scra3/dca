@@ -1,6 +1,7 @@
-import mapper
 import enum
 import typing
+
+import mapper
 
 
 class OrderType(enum.Enum):

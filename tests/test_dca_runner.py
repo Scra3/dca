@@ -1,7 +1,8 @@
-import dca_runner as runner
-import model
 import stub
 from fixtures import drop_databases
+
+import dca_runner as runner
+import model
 
 
 def test_dca_runner_does_not_call_buy_method_when_amount_spent_is_0(

@@ -1,5 +1,6 @@
-import model
 from fixtures import drop_databases
+
+import model
 
 
 def test_get_amount_spent(drop_databases):

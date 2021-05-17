@@ -1,5 +1,6 @@
-import mapper
 import typing
+
+import mapper
 
 
 class PriceHistory(mapper.PriceHistoryMapper):

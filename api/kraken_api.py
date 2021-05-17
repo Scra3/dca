@@ -1,10 +1,10 @@
-import requests
 import time
-import krakenex
-from model.log import Log
-from model.enum import PairMapping
-from model.enum import AssetMapping
 
+import krakenex
+import requests
+
+from model.enum import AssetMapping, PairMapping
+from model.log import Log
 
 WAITING_BEFORE_RETRY_SECOND = 10
 KRAKEN_KEY_FILE = "kraken.key"

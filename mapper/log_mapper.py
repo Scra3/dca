@@ -1,5 +1,6 @@
-import mapper.mapper as mapper
 import typing
+
+import mapper.mapper as mapper
 
 DB = "db/log_pickle_db"
 DB_TEST = "db/log_pickle_db_test.json"
