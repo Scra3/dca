@@ -1,4 +1,5 @@
 import time
+import typing
 
 import krakenex
 import requests
@@ -55,7 +56,7 @@ class KrakenApi:
             Log.error(message).save()
 
     @staticmethod
-    def get_balance(traded_pair: PairMapping) -> float:
+    def get_balance(traded_pair: PairMapping) -> typing.Optional[float]:
         kraken = krakenex.API()
 
         try:
@@ -69,3 +70,5 @@ class KrakenApi:
             ).save()
         except requests.HTTPError:
             Log.error(f"get balance failed, trade_pair={traded_pair.value}").save()
+
+        return None

@@ -106,12 +106,13 @@ class Dca:
             for index, _ in enumerate(prices_history[min_index:count_price]):
                 next_amount += (count_price - index) * self._config.step_price
 
-        next_total_spent = total_spent + next_amount
+        total_spent_value = 0.0 if total_spent is None else total_spent
+        next_total_spent = total_spent_value + next_amount
         if (
             self._config.max_total_amount_to_spend is not None
             and self._config.max_total_amount_to_spend <= next_total_spent
         ):
-            next_amount = self._config.max_total_amount_to_spend - total_spent
+            next_amount = self._config.max_total_amount_to_spend - total_spent_value
             return next_amount if next_amount >= 0 else 0
 
         if (

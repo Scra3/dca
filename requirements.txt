@@ -4,3 +4,4 @@ requests==2.25.1
 krakenex==2.1.0
 black==21.5b1
 isort==5.8.0
+mypy==0.812

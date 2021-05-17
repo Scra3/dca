@@ -9,7 +9,9 @@ import dca_runner as runner
 import model
 
 
-def get_only_tuesday_prices(prices: typing.List[float]) -> typing.List[float]:
+def get_only_tuesday_prices(
+    prices: typing.List[typing.Tuple[float, float]]
+) -> typing.List[float]:
     filtered_prices = []
     for price in prices:
         timestamp = price[0] / 1000

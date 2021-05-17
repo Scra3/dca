@@ -25,12 +25,18 @@ class Mapper(abc.ABC):
         return db_test
 
     @staticmethod
-    def _save_timestamp(db: pickledb.PickleDB, timestamp: float = time.time()) -> float:
+    def _save_timestamp(
+        db: pickledb.PickleDB, timestamp: typing.Optional[float]
+    ) -> float:
+        time_to_save = timestamp
+        if time_to_save is None:
+            time_to_save = time.time()
+
         if not db.get(TIMESTAMPS_KEY):
             db.lcreate(TIMESTAMPS_KEY)
 
-        db.ladd(TIMESTAMPS_KEY, timestamp)
-        return timestamp
+        db.ladd(TIMESTAMPS_KEY, time_to_save)
+        return time_to_save
 
     @staticmethod
     def _drop_db(location: str):
