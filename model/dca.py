@@ -1,3 +1,4 @@
+import dataclasses
 import json
 import typing
 
@@ -5,22 +6,14 @@ import api
 from model.enum import PairMapping
 
 
+@dataclasses.dataclass
 class DcaConfiguration:
-    def __init__(
-        self,
-        price_initialisation: float,
-        step_price: float,
-        traded_pair: PairMapping,
-        force_buy_under_price: typing.Optional[float] = None,
-        max_amount_to_spend: typing.Optional[float] = None,
-        max_total_amount_to_spend: typing.Optional[float] = None,
-    ):
-        self.price_initialisation = price_initialisation
-        self.step_price = step_price
-        self.traded_pair: PairMapping = traded_pair
-        self.force_buy_under_price = force_buy_under_price
-        self.max_amount_to_spend = max_amount_to_spend
-        self.max_total_amount_to_spend = max_total_amount_to_spend
+    price_initialisation: float
+    step_price: float
+    traded_pair: PairMapping
+    force_buy_under_price: typing.Optional[float] = None
+    max_amount_to_spend: typing.Optional[float] = None
+    max_total_amount_to_spend: typing.Optional[float] = None
 
     @classmethod
     def serialise(cls, json_as_str: str) -> "DcaConfiguration":
