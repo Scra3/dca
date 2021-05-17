@@ -1,6 +1,6 @@
-if __name__ == '__main__':
+if __name__ == "__main__":
     price_initialisation: float = 10
-    step_price: float = 7.0
+    step_price: float = 10.0
     max_total_amount_to_spend: float = 14000
 
     remaining_amount = max_total_amount_to_spend

@@ -16,6 +16,4 @@ class Order(mapper.OrdersMapper):
         order_type: OrderType,
         timestamp: typing.Optional[float] = None,
     ):
-        super().__init__(
-            amount, price, order_type.value, timestamp
-        )
+        super().__init__(amount, price, order_type.value, timestamp)

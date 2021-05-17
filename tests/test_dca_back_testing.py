@@ -28,9 +28,7 @@ def test_dca_runner_with_real_btc_prices(drop_databases):
     broker = stub.BrokerStub()
     broker.prices = get_only_tuesday_prices(data.btc_prices)
 
-    dca_runner = runner.DcaRunner(
-        broker=broker, dca_configuration=dca_configuration
-    )
+    dca_runner = runner.DcaRunner(broker=broker, dca_configuration=dca_configuration)
 
     # run dca for each prices
     for _ in range(len(broker.prices)):
@@ -58,9 +56,7 @@ def test_dca_runner_with_real_eth_prices(drop_databases):
     broker = stub.BrokerStub()
     broker.prices = get_only_tuesday_prices(data.eth_prices)
 
-    dca_runner = runner.DcaRunner(
-        broker=broker, dca_configuration=dca_configuration
-    )
+    dca_runner = runner.DcaRunner(broker=broker, dca_configuration=dca_configuration)
 
     # run dca for each prices
     for _ in range(len(broker.prices)):

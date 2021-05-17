@@ -8,9 +8,7 @@ TYPES_KEY = "types"
 
 
 class LogMapper(mapper.Mapper):
-    def __init__(
-        self, log_type: str, message: str, timestamp: typing.Optional[float]
-    ):
+    def __init__(self, log_type: str, message: str, timestamp: typing.Optional[float]):
         self._log_type: str = log_type
         self._message: str = message
         self._timestamp: typing.Optional[float] = timestamp

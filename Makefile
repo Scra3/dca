@@ -22,6 +22,9 @@ install: ## Install dependencies
 clean-db: ## clean db files:
 	rm db/*db*
 
+lint-fix: ## apply lint:
+	python3 -m black .
+
 backup-db: ## backup db files:
 	mkdir -p backup; mkdir backup/$(BACKUP_DIRECTORY) && cp db/* backup/$(BACKUP_DIRECTORY)/ && echo "backup done"
 

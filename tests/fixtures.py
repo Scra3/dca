@@ -9,4 +9,3 @@ def drop_databases():
     model.Log.drop_db()
 
     yield
-
