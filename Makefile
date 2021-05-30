@@ -34,6 +34,9 @@ generate-configuration: ## create dca configuration json file
 projection: ## do a projection to estimate configuration parameters
 	python3 projection.py
 
+pulse: ## send a pulse by telegram bot
+	python3 pulser.py
+
 copy-data-to-front: ## copy data to display in front
 	rm -rf ./front/chart/data
 	mkdir ./front/chart/data

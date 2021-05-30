@@ -94,6 +94,7 @@ Add all this lines after  ```crontab -e```
     0 0 * * 1 cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
     2 0 * * 1 cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
     2 0 * * 1 cd /home/pi/Documents/dca/ && make copy-data-to-front >> log.txt 2>&1
+    45 21 * * 0 cd /home/pi/Documents/dca/ && make pulse >> log.txt 2>&1
     ```
 
 ### Display front
