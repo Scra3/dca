@@ -2,12 +2,12 @@ import model
 
 
 def test_get_current_bitcoin_price():
-    price = model.Broker.get_current_pair_price(model.PairMapping.XBTUSDC)
+    price = model.Broker.get_current_pair_price(model.TradedPairMapping.ETHUSDC)
     assert price is not None
 
 
 def test_get_current_ethereum_price():
-    price = model.Broker.get_current_pair_price(model.PairMapping.ETHEUR)
+    price = model.Broker.get_current_pair_price(model.TradedPairMapping.ETHUSDT)
     assert price is not None
 
 

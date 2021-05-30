@@ -84,10 +84,12 @@ Add a *telegram.key* file with the first line the chat_id, and the second line t
 
 *  Scheduling execution with cron task
 
+**“At 00:00 on Monday.”**
+
     ```bash
-    * * * * * cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
-    * * * * * cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
-    * * * * * cd /home/pi/Documents/dca/ && make copy-data-to-front >> log.txt 2>&1
+    0 0 * * 1 cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
+    0 0 * * 1 cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
+    0 0 * * 1 cd /home/pi/Documents/dca/ && make copy-data-to-front >> log.txt 2>&1
     ```
 
 ### Display front

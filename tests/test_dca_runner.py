@@ -12,7 +12,9 @@ def test_dca_runner_does_not_call_buy_method_when_amount_spent_is_0(
     broker.prices = [200, 300]
 
     dca_configuration = model.DcaConfiguration(
-        price_initialisation=20, step_price=1, traded_pair=model.PairMapping.XBTUSDC
+        price_initialisation=20,
+        step_price=1,
+        traded_pair=model.TradedPairMapping.XBTUSDC,
     )
     dca_runner = runner.DcaRunner(broker=broker, dca_configuration=dca_configuration)
     # initialisation
@@ -30,7 +32,9 @@ def test_dca_runner_calls_buy_method_when_amount_spent_is_bigger_than_0(
     broker.prices = [200, 100]
 
     dca_configuration = model.DcaConfiguration(
-        price_initialisation=20, step_price=1, traded_pair=model.PairMapping.XBTUSDC
+        price_initialisation=20,
+        step_price=1,
+        traded_pair=model.TradedPairMapping.XBTUSDC,
     )
     dca_runner = runner.DcaRunner(broker=broker, dca_configuration=dca_configuration)
     # initialisation
@@ -46,7 +50,9 @@ def test_dca_runner_4_times(drop_databases):
     broker.prices = [200, 300, 250, 150]
 
     dca_configuration = model.DcaConfiguration(
-        price_initialisation=20, step_price=1, traded_pair=model.PairMapping.XBTUSDC
+        price_initialisation=20,
+        step_price=1,
+        traded_pair=model.TradedPairMapping.XBTUSDC,
     )
     dca_runner = runner.DcaRunner(broker=broker, dca_configuration=dca_configuration)
 

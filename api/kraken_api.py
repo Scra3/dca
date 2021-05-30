@@ -1,10 +1,9 @@
 import time
-import typing
 
 import krakenex
 import requests
 
-from model.enum import AssetMapping, PairMapping
+from model.enum import TradedPairMapping
 from model.log import Log
 
 WAITING_BEFORE_RETRY_SECOND = 10
@@ -13,7 +12,7 @@ KRAKEN_KEY_FILE = "kraken.key"
 
 class KrakenApi:
     @staticmethod
-    def get_current_pair_price(pair: PairMapping) -> float:
+    def get_current_pair_price(pair: TradedPairMapping) -> float:
         kraken = krakenex.API()
         try:
             response = kraken.query_public(f"Ticker?pair={pair.name}")
@@ -30,7 +29,9 @@ class KrakenApi:
         return amount_to_spend / price
 
     @staticmethod
-    def send_buy_order(traded_pair: PairMapping, amount_to_spend: float, price: float):
+    def send_buy_order(
+        traded_pair: TradedPairMapping, amount_to_spend: float, price: float
+    ):
         kraken = krakenex.API()
 
         volume = KrakenApi._compute_volume_to_buy(amount_to_spend, price)
@@ -54,21 +55,3 @@ class KrakenApi:
             message = f"[FAILED] Send buy order failed, "
             f"trade_pair={traded_pair.value}, price={traded_pair.value}, amount_to_spend={traded_pair.value}"
             Log.error(message).save()
-
-    @staticmethod
-    def get_balance(traded_pair: PairMapping) -> typing.Optional[float]:
-        kraken = krakenex.API()
-
-        try:
-            kraken.load_key(KRAKEN_KEY_FILE)
-            return kraken.query_private("Balance")["result"][
-                AssetMapping[traded_pair.value].value
-            ]
-        except FileNotFoundError:
-            Log.warning(
-                "KRAKEN KEY is not defined, can not get balance from broker"
-            ).save()
-        except requests.HTTPError:
-            Log.error(f"get balance failed, trade_pair={traded_pair.value}").save()
-
-        return None
