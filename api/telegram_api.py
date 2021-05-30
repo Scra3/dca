@@ -12,9 +12,10 @@ class TelegramApi:
         file = TelegramApi.get_telegram_key_path()
         if os.path.isfile(file):
             chat_id, secret = TelegramApi.load_key(file)
-            requests.get(
+            response = requests.get(
                 f"https://api.telegram.org/bot{secret}/sendMessage?chat_id={chat_id}&text={message}"
             )
+            print(response)
         else:
             print('There is no telegram file configuration')
 
