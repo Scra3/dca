@@ -35,9 +35,9 @@ class DcaRunner:
                 timestamp,
             ).save()
             Log.success(
-                f"buy order is sent - amount_to_spend={amount_to_spend}, current_price={current_price}"
+                f"buy order is sent - amount_to_spend={amount_to_spend}, current_price={current_price}, traded_pair={self._dca_configuration.traded_pair}"
             ).save()
         else:
             Log.info(
-                f"buy order is not sent - amount_to_spend={amount_to_spend}, current_price={current_price}"
+                f"buy order is not sent - amount_to_spend={amount_to_spend}, current_price={current_price}, traded_pair={self._dca_configuration.traded_pair}"
             ).save()
