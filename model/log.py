@@ -1,5 +1,6 @@
 import typing
 
+import api
 import mapper
 
 
@@ -37,4 +38,5 @@ class Log(mapper.LogMapper):
         return log
 
     def _print(self):
+        api.TelegramApi.send_message(self._message)
         print(f"{self._log_type} - {self._message}")

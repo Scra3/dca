@@ -68,7 +68,11 @@ json dca configuration:
 
 ### Add secret key for the kraken broker
 
-Add a *kraken.key* file with the first line, and the second line the secret key.
+Add a *kraken.key* file with the first line the key, and the second line the secret key.
+
+### Add secret key for the telegram chat
+
+Add a *telegram.key* file with the first line the chat_id, and the second line the secret key.
 
 ### Run
 
