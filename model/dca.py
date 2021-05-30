@@ -2,7 +2,6 @@ import dataclasses
 import json
 import typing
 
-import api
 from model.enum import TradedPairMapping
 
 

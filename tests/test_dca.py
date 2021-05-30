@@ -1,6 +1,5 @@
 import pytest
 
-import api
 import model
 
 

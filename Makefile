@@ -1,6 +1,8 @@
 .DEFAULT_GOAL := help
 
-.PHONY: tests run install clean-db generate-configuration run-production backup-db projection run-front copy-data-to-front
+.PHONY: tests run install clean-db generate-configuration run-production backup-db projection run-front copy-data-to-front pulse
+
+WORKING_DIRECTORY=$(PWD)
 
 BACKUP_DIRECTORY := $(shell date +%Y-%m-%d.%H:%M:%S)
 
@@ -34,8 +36,8 @@ generate-configuration: ## create dca configuration json file
 projection: ## do a projection to estimate configuration parameters
 	python3 projection.py
 
-pulse: ## send a pulse by telegram bot
-	python3 pulser.py
+pulse: ## send a pulse log
+	PYTHONPATH=$(WORKING_DIRECTORY) python3 tools/pulser.py
 
 copy-data-to-front: ## copy data to display in front
 	rm -rf ./front/chart/data
