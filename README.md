@@ -76,6 +76,8 @@ Add a *telegram.key* file with the first line the chat_id, and the second line t
 
 ### Run
 
+**Clear db if it is the first run**
+
 *  Run iteration manually
 
     ```bash
@@ -84,12 +86,14 @@ Add a *telegram.key* file with the first line the chat_id, and the second line t
 
 *  Scheduling execution with cron task
 
-**“At 00:00 on Monday.”**
+Add all this lines after  ```crontab -e```
+
+* **“At 00:00 on Monday.” for the first line and “At 00:02 on Monday.” for the second and last lines**
 
     ```bash
     0 0 * * 1 cd /home/pi/Documents/dca/ && make run-production >> log.txt 2>&1
-    0 0 * * 1 cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
-    0 0 * * 1 cd /home/pi/Documents/dca/ && make copy-data-to-front >> log.txt 2>&1
+    2 0 * * 1 cd /home/pi/Documents/dca/ && make backup-db >> log.txt 2>&1
+    2 0 * * 1 cd /home/pi/Documents/dca/ && make copy-data-to-front >> log.txt 2>&1
     ```
 
 ### Display front
