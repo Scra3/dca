@@ -15,6 +15,8 @@ class TelegramApi:
             requests.get(
                 f"https://api.telegram.org/bot{secret}/sendMessage?chat_id={chat_id}&text={message}"
             )
+        else:
+            print('There is no telegram file configuration')
 
     @staticmethod
     def get_telegram_key_path() -> str:
