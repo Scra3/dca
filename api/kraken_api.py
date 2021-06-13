@@ -42,7 +42,7 @@ class KrakenApi:
                 {
                     "pair": traded_pair.value,
                     "type": "buy",
-                    "ordertype": "limit",
+                    "ordertype": "market",
                     "price": price,
                     "volume": volume,
                 },
